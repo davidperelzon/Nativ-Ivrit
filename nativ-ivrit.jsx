@@ -41,7 +41,7 @@ const PENALTY_QUESTIONS = [
   { heb:"לֹא",            tr:"Lo",        opts:["Sim","Não","Água","Casa"],                          answer:"Não"        },
   { heb:"מַיִם",         tr:"Máim",     opts:["Pão","Família","Água","Casa"],                      answer:"Água"       },
   { heb:"לֶחֶם",         tr:"Léhem",    opts:["Água","Pão","Leite","Sal"],                         answer:"Pão"        },
-  { heb:"בַּיִת",        tr:"Báyit",     opts:["Escola","Casa","Rua","Cidade"],                     answer:"Casa"       },
+  { heb:"בַּיִת",        tr:"Báit",     opts:["Escola","Casa","Rua","Cidade"],                     answer:"Casa"       },
   { heb:"שַׁעַר",        tr:"Sha'ar",    opts:["Bola","Jogador","Gol","Estádio"],                   answer:"Gol"        },
   { heb:"כַּדּוּר",      tr:"Kadúr",     opts:["Gol","Bola","Time","Árbitro"],                      answer:"Bola"       },
   { heb:"נִצָּחוֹן",     tr:"Nitsakhón", opts:["Derrota","Empate","Vitória","Gol"],                 answer:"Vitória"    },
@@ -128,7 +128,7 @@ export default function NativIvrit() {
   const RIDDLES = [
     { pre:"Como você diz", word:"Olá / Paz",  opts:["שָׁלוֹם (Shalom)","תּוֹדָה (Todá)","כֵּן (Ken)","לֹא (Lo)"],                   answer:"שָׁלוֹם (Shalom)", emoji:"👋" },
     { pre:"Como você diz", word:"Obrigado/a", opts:["בְּבַקָּשָׁה (Bevakashá)","מַיִם (Máyim)","תּוֹדָה (Todá)","שָׁלוֹם (Shalom)"],answer:"תּוֹדָה (Todá)",    emoji:"🙏" },
-    { pre:"Como você diz", word:"Água",       opts:["לֶחֶם (Lékhem)","מַיִם (Máyim)","בַּיִת (Báyit)","כֵּן (Ken)"],                 answer:"מַיִם (Máyim)",     emoji:"💧" },
+    { pre:"Como você diz", word:"Água",       opts:["לֶחֶם (Léhem)","מַיִם (Máim)","בַּיִת (Báit)","כֵּן (Ken)"],                 answer:"מַיִם (Máim)",     emoji:"💧" },
     { pre:"Como você diz", word:"Gol!",       opts:["כַּדּוּר (Kadúr)","שָׂחְקָן (Sakhkán)","שַׁעַר (Sha'ar)","נִצָּחוֹן (Nitsakhón)"],answer:"שַׁעַר (Sha'ar)", emoji:"⚽" },
     { pre:"Como você diz", word:"Vitória",    opts:["שַׁעַר (Sha'ar)","נִצָּחוֹן (Nitsakhón)","מְאַמֵּן (Me'amén)","כַּדּוּר (Kadúr)"],answer:"נִצָּחוֹן (Nitsakhón)",emoji:"🏆" },
   ];
@@ -275,7 +275,7 @@ function HomeTab({xp,setTab,goGame}){
       <div style={{ background:C.white,borderRadius:20,padding:"18px",marginBottom:18,border:`2px solid ${C.border}`,textAlign:"center" }}>
         <div style={{ fontSize:11,fontWeight:800,color:C.gray,letterSpacing:2,textTransform:"uppercase",marginBottom:10 }}>✨ Frase do Dia</div>
         <div style={{ fontSize:32,direction:"rtl",fontWeight:900,color:C.blue,marginBottom:2 }}>מַה שְׁלוֹמְךָ?</div>
-        <div style={{ color:C.orange,fontWeight:800,fontSize:16 }}>Ma Shlomkhá?</div>
+        <div style={{ color:C.orange,fontWeight:800,fontSize:16 }}>Ma Shlomhá?</div>
         <div style={{ color:C.gray,fontSize:13 }}>Como vai você?</div>
       </div>
       <div style={{ fontSize:12,fontWeight:800,color:C.gray,letterSpacing:1,textTransform:"uppercase",marginBottom:12 }}>Jogue Agora</div>
