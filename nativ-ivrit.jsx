@@ -20,9 +20,9 @@ const WORDS = [
   { heb:"כֵּן",           tr:"Ken",       pt:"Sim",         emoji:"✅" },
   { heb:"לֹא",            tr:"Lo",        pt:"Não",         emoji:"❌" },
   { heb:"מַיִם",         tr:"Máyim",     pt:"Água",        emoji:"💧" },
-  { heb:"לֶחֶם",         tr:"Lékhem",    pt:"Pão",         emoji:"🍞" },
+  { heb:"לֶחֶם",         tr:"Léchem",    pt:"Pão",         emoji:"🍞" },
   { heb:"בַּיִת",        tr:"Báyit",     pt:"Casa",        emoji:"🏠" },
-  { heb:"מִשְׁפָּחָה",  tr:"Mishpakhá", pt:"Família",     emoji:"👨‍👩‍👧" },
+  { heb:"מִשְׁפָּחָה",  tr:"Mishpahá", pt:"Família",     emoji:"👨‍👩‍👧" },
 ];
 
 const FOOTBALL = [
@@ -39,8 +39,8 @@ const PENALTY_QUESTIONS = [
   { heb:"תּוֹדָה",       tr:"Todá",      opts:["Com licença","Obrigado/a","Sim","Não"],             answer:"Obrigado/a" },
   { heb:"כֵּן",           tr:"Ken",       opts:["Não","Talvez","Sim","Por favor"],                   answer:"Sim"        },
   { heb:"לֹא",            tr:"Lo",        opts:["Sim","Não","Água","Casa"],                          answer:"Não"        },
-  { heb:"מַיִם",         tr:"Máyim",     opts:["Pão","Família","Água","Casa"],                      answer:"Água"       },
-  { heb:"לֶחֶם",         tr:"Lékhem",    opts:["Água","Pão","Leite","Sal"],                         answer:"Pão"        },
+  { heb:"מַיִם",         tr:"Máim",     opts:["Pão","Família","Água","Casa"],                      answer:"Água"       },
+  { heb:"לֶחֶם",         tr:"Léhem",    opts:["Água","Pão","Leite","Sal"],                         answer:"Pão"        },
   { heb:"בַּיִת",        tr:"Báyit",     opts:["Escola","Casa","Rua","Cidade"],                     answer:"Casa"       },
   { heb:"שַׁעַר",        tr:"Sha'ar",    opts:["Bola","Jogador","Gol","Estádio"],                   answer:"Gol"        },
   { heb:"כַּדּוּר",      tr:"Kadúr",     opts:["Gol","Bola","Time","Árbitro"],                      answer:"Bola"       },
