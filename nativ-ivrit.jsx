@@ -375,7 +375,7 @@ function ChatTab({messages,input,setInput,onSend,chatRef}){
         <h2 style={{fontSize:18,fontWeight:900,color:C.blue}}>💬 Comunidade</h2>
         <div style={{display:"flex",alignItems:"center",gap:6,marginTop:3}}>
           <div style={{width:8,height:8,borderRadius:"50%",background:"#4CAF50",animation:"pulseGreen 2s infinite"}}/>
-          <span style={{fontSize:12,color:C.gray,fontWeight:700}}>24 alunos online agora</span>
+          <span style={{fontSize:12,color:C.gray,fontWeight:700}}>67 alunos online agora</span>
         </div>
       </div>
       <div ref={chatRef} style={{flex:1,overflowY:"auto",padding:"14px 16px",display:"flex",flexDirection:"column",gap:11,background:C.bg}}>
