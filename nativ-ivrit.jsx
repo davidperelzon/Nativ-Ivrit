@@ -2,11 +2,11 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 // ── PALETTE ──────────────────────────────────────────────────────────────────
 const C = {
-  blue:"#1565C0", blueMid:"#1E88E5", blueLt:"#E3F2FD",
-  orange:"#FF6D00", orangeMid:"#FF9100", orangeLt:"#FFF3E0",
-  navy:"#0D2B6B", white:"#FFFFFF", bg:"#F0F4FF",
-  border:"#DCE4F5", gray:"#8896B3", grayLt:"#EEF2FA",
-  red:"#F44336", redLt:"#FFEBEE", gold:"#FFB300",
+  blue:"#1E3A8A", blueMid:"#1D4ED8", blueLt:"#EEF2FF",
+  orange:"#B45309", orangeMid:"#D97706", orangeLt:"#FEF3C7",
+  navy:"#111827", white:"#FFFFFF", bg:"#F8FAFC",
+  border:"#E2E8F0", gray:"#64748B", grayLt:"#F1F5F9",
+  red:"#DC2626", redLt:"#FEF2F2", gold:"#D97706",
 };
 
 // ── DATA ─────────────────────────────────────────────────────────────────────
@@ -50,24 +50,24 @@ const PENALTY_QUESTIONS = [
 ];
 
 const LEVELS = [
-  { id:1, title:"Alef", sub:"Primeiros Passos", icon:"👋", locked:false,
-    lessons:[{ id:"1-1",title:"Cumprimentos",icon:"👋",xp:10 },{ id:"1-2",title:"Sim e Não",icon:"✅",xp:10 },{ id:"1-3",title:"Educação",icon:"🙏",xp:15 }]},
-  { id:2, title:"Bet",   sub:"Cotidiano",       icon:"🏠", locked:true,
-    lessons:[{ id:"2-1",title:"Família",icon:"👨‍👩‍👧",xp:15 },{ id:"2-2",title:"Comida",icon:"🍞",xp:15 },{ id:"2-3",title:"Cores",icon:"🎨",xp:20 }]},
-  { id:3, title:"Gimel", sub:"Conversação",     icon:"💬", locked:true,
+  { id:1, title:"Alef", sub:"Fundamentos", icon:"📖", locked:false,
+    lessons:[{ id:"1-1",title:"Cumprimentos",icon:"👋",xp:10 },{ id:"1-2",title:"Afirmações",icon:"✅",xp:10 },{ id:"1-3",title:"Expressões",icon:"🙏",xp:15 }]},
+  { id:2, title:"Bet",   sub:"Vocabulário", icon:"🏠", locked:true,
+    lessons:[{ id:"2-1",title:"Família",icon:"👨‍👩‍👧",xp:15 },{ id:"2-2",title:"Alimentos",icon:"🍞",xp:15 },{ id:"2-3",title:"Cores",icon:"🎨",xp:20 }]},
+  { id:3, title:"Gimel", sub:"Diálogos",     icon:"💬", locked:true,
     lessons:[{ id:"3-1",title:"Perguntas",icon:"❓",xp:20 },{ id:"3-2",title:"Números",icon:"🔢",xp:20 },{ id:"3-3",title:"Dias",icon:"📅",xp:25 }]},
-  { id:4, title:"Dalet", sub:"Avançado",        icon:"⭐", locked:true,
-    lessons:[{ id:"4-1",title:"Verbos",icon:"🔤",xp:30 },{ id:"4-2",title:"Futebol",icon:"⚽",xp:30 },{ id:"4-3",title:"Cultura",icon:"🇮🇱",xp:35 }]},
+  { id:4, title:"Dalet", sub:"Intermediário",icon:"📚", locked:true,
+    lessons:[{ id:"4-1",title:"Verbos",icon:"🔤",xp:30 },{ id:"4-2",title:"Esportes",icon:"⚽",xp:30 },{ id:"4-3",title:"Cultura",icon:"🇮🇱",xp:35 }]},
 ];
 
 const CHAT_SEED = [
-  { id:1, user:"Yael 🇮🇱",  avatar:"🧕", msg:"Shalom a todos! Alguém quer praticar conversa?", time:"09:12", mine:false },
-  { id:2, user:"Carlos 🇧🇷", avatar:"🧑", msg:"Shalom! Estou no nível Bet, posso tentar 😊",   time:"09:14", mine:false },
-  { id:3, user:"Ana 🇧🇷",    avatar:"👩", msg:"תּוֹדָה (Todá) pela dica de ontem!",             time:"09:20", mine:false },
-  { id:4, user:"Yael 🇮🇱",   avatar:"🧕", msg:"בְּבַקָּשָׁה (Bevakashá)! Vamos praticar 💪",   time:"09:22", mine:false },
+  { id:1, user:"Yael",  avatar:"👩", msg:"Shalom! Alguém quer praticar?", time:"09:12", mine:false },
+  { id:2, user:"Carlos", avatar:"👨", msg:"Shalom! Nível Bet. Posso tentar.",   time:"09:14", mine:false },
+  { id:3, user:"Ana",    avatar:"👩", msg:"תּוֹדָה pela explicação de ontem.",  time:"09:20", mine:false },
+  { id:4, user:"Yael",   avatar:"👩", msg:"בְּבַקָּשָׁה. Vamos continuar.",    time:"09:22", mine:false },
 ];
 
-const GW = 400; const GH = 220; // SVG goal dimensions
+const GW = 400; const GH = 220;
 const TOTAL_KICKS = 5;
 const shuffle = (a) => [...a].sort(() => Math.random() - 0.5);
 function buildFQOpts(idx) {
@@ -75,7 +75,6 @@ function buildFQOpts(idx) {
   return shuffle([c, ...shuffle(FOOTBALL.filter((_,i)=>i!==idx)).slice(0,3)]);
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
 export default function NativIvrit() {
   const [tab, setTab]       = useState("home");
   const [screen, setScreen] = useState(null);
@@ -126,11 +125,11 @@ export default function NativIvrit() {
 
   // Riddle
   const RIDDLES = [
-    { pre:"Como você diz", word:"Olá / Paz",  opts:["שָׁלוֹם (Shalom)","תּוֹדָה (Todá)","כֵּן (Ken)","לֹא (Lo)"],                   answer:"שָׁלוֹם (Shalom)", emoji:"👋" },
-    { pre:"Como você diz", word:"Obrigado/a", opts:["בְּבַקָּשָׁה (Bevakashá)","מַיִם (Máyim)","תּוֹדָה (Todá)","שָׁלוֹם (Shalom)"],answer:"תּוֹדָה (Todá)",    emoji:"🙏" },
-    { pre:"Como você diz", word:"Água",       opts:["לֶחֶם (Léhem)","מַיִם (Máim)","בַּיִת (Báit)","כֵּן (Ken)"],                 answer:"מַיִם (Máim)",     emoji:"💧" },
-    { pre:"Como você diz", word:"Gol!",       opts:["כַּדּוּר (Kadúr)","שָׂחְקָן (Sakhkán)","שַׁעַר (Sha'ar)","נִצָּחוֹן (Nitsakhón)"],answer:"שַׁעַר (Sha'ar)", emoji:"⚽" },
-    { pre:"Como você diz", word:"Vitória",    opts:["שַׁעַר (Sha'ar)","נִצָּחוֹן (Nitsakhón)","מְאַמֵּן (Me'amén)","כַּדּוּר (Kadúr)"],answer:"נִצָּחוֹן (Nitsakhón)",emoji:"🏆" },
+    { pre:"Como se diz", word:"Olá / Paz",  opts:["שָׁלוֹם (Shalom)","תּוֹדָה (Todá)","כֵּן (Ken)","לֹא (Lo)"],                   answer:"שָׁלוֹם (Shalom)", emoji:"👋" },
+    { pre:"Como se diz", word:"Obrigado/a", opts:["בְּבַקָּשָׁה (Bevakashá)","מַיִם (Máyim)","תּוֹדָה (Todá)","שָׁלוֹם (Shalom)"],answer:"תּוֹדָה (Todá)",    emoji:"🙏" },
+    { pre:"Como se diz", word:"Água",       opts:["לֶחֶם (Léhem)","מַיִם (Máim)","בַּיִת (Báit)","כֵּן (Ken)"],                 answer:"מַיִם (Máim)",     emoji:"💧" },
+    { pre:"Como se diz", word:"Gol!",       opts:["כַּדּוּר (Kadúr)","שָׂחְקָן (Sakhkán)","שַׁעַר (Sha'ar)","נִצָּחוֹן (Nitsakhón)"],answer:"שַׁעַר (Sha'ar)", emoji:"⚽" },
+    { pre:"Como se diz", word:"Vitória",    opts:["שַׁעַר (Sha'ar)","נִצָּחוֹן (Nitsakhón)","מְאַמֵּן (Me'amén)","כַּדּוּר (Kadúr)"],answer:"נִצָּחוֹן (Nitsakhón)",emoji:"🏆" },
   ];
   const [rdIdx,setRdIdx]   = useState(0);
   const [rdSel,setRdSel]   = useState(null);
@@ -153,12 +152,12 @@ export default function NativIvrit() {
   const sendMsg = () => {
     if (!chatInput.trim()) return;
     const now = new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
-    setMessages(m=>[...m,{ id:Date.now(), user:"Você 🇧🇷", avatar:"😊", msg:chatInput.trim(), time:now, mine:true }]);
+    setMessages(m=>[...m,{ id:Date.now(), user:"Você", avatar:"👤", msg:chatInput.trim(), time:now, mine:true }]);
     setChatInput("");
     setTimeout(()=>{
-      const replies = ["תּוֹדָה (Todá)! 😊","Shalom! Que legal!","בְּבַקָּשָׁה! Vamos praticar?","Ótimo progresso! 💪","Boker Tov! ☀️"];
+      const replies = ["תּוֹדָה!","Shalom!","בְּבַקָּשָׁה.","Bom progresso.","Boker Tov!"];
       const now2 = new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
-      setMessages(m=>[...m,{ id:Date.now()+1, user:"Yael 🇮🇱", avatar:"🧕", msg:replies[Math.floor(Math.random()*replies.length)], time:now2, mine:false }]);
+      setMessages(m=>[...m,{ id:Date.now()+1, user:"Yael", avatar:"👩", msg:replies[Math.floor(Math.random()*replies.length)], time:now2, mine:false }]);
     },900);
   };
 
@@ -167,68 +166,64 @@ export default function NativIvrit() {
 
   const TABS = [
     { id:"home",  icon:"🏠", label:"Início"   },
-    { id:"learn", icon:"📚", label:"Aprender" },
-    { id:"games", icon:"🎮", label:"Jogos"    },
-    { id:"chat",  icon:"💬", label:"Chat"     },
+    { id:"learn", icon:"📚", label:"Estudos"  },
+    { id:"games", icon:"🎯", label:"Exercícios" },
+    { id:"chat",  icon:"💬", label:"Fórum"    },
   ];
 
   return (
-    <div style={{ minHeight:"100vh", background:C.bg, fontFamily:"'Nunito','Segoe UI',sans-serif", maxWidth:480, margin:"0 auto", display:"flex", flexDirection:"column" }}>
+    <div style={{ minHeight:"100vh", background:C.bg, fontFamily:"'Inter','Segoe UI',system-ui,-apple-system,sans-serif", maxWidth:480, margin:"0 auto", display:"flex", flexDirection:"column" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         *{box-sizing:border-box;margin:0;padding:0}
-        button{cursor:pointer;border:none;font-family:'Nunito',sans-serif;transition:all .15s}
-        button:active{transform:scale(.96)}
-        input{font-family:'Nunito',sans-serif}
-        @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes pop{0%{transform:scale(.82);opacity:0}65%{transform:scale(1.07)}100%{transform:scale(1);opacity:1}}
-        @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
-        @keyframes wiggle{0%,100%{transform:rotate(0)}30%{transform:rotate(-13deg)}70%{transform:rotate(13deg)}}
-        @keyframes slideIn{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:translateX(0)}}
-        @keyframes confetti{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(240px) rotate(540deg);opacity:0}}
-        @keyframes pulseGreen{0%,100%{box-shadow:0 0 0 0 #4CAF5066}50%{box-shadow:0 0 0 8px #4CAF5000}}
-        .fadeUp{animation:fadeUp .35s ease forwards}
-        .pop{animation:pop .35s ease forwards}
-        .shake{animation:shake .35s ease}
-        .wiggle{animation:wiggle .5s ease}
-        .slideIn{animation:slideIn .28s ease forwards}
-        .flip-wrap{perspective:900px}
-        .flip-inner{width:100%;height:100%;transition:transform .5s cubic-bezier(.4,2,.55,1);transform-style:preserve-3d;position:relative}
-        .flip-inner.on{transform:rotateY(180deg)}
-        .flip-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px}
+        button{cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .2s ease}
+        button:active{transform:translateY(1px)}
+        input{font-family:'Inter',sans-serif}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes slideIn{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+        .fadeUp{animation:fadeUp .4s ease-out forwards}
+        .slideIn{animation:slideIn .3s ease-out forwards}
+        .shake{animation:shake .4s ease-out}
+        .flip-wrap{perspective:1000px}
+        .flip-inner{width:100%;height:100%;transition:transform .6s;transition-timing-function:cubic-bezier(.25,.46,.45,.94);transform-style:preserve-3d;position:relative}
+        .flip-inner.flipped{transform:rotateY(180deg)}
+        .flip-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
         .flip-back{transform:rotateY(180deg)}
-        ::-webkit-scrollbar{width:0}
-        input:focus{outline:none}
+        ::-webkit-scrollbar{width:4px}
+        ::-webkit-scrollbar-track{background:C.grayLt}
+        ::-webkit-scrollbar-thumb{background:${C.gray}; border-radius:2px}
+        input:focus{outline:2px solid ${C.blue}; outline-offset:2px}
       `}</style>
 
       {/* TOP BAR */}
-      <div style={{ background:C.white, borderBottom:`2px solid ${C.border}`, padding:"10px 18px", display:"flex", alignItems:"center", justifyContent:"space-between", position:"sticky", top:0, zIndex:200 }}>
+      <div style={{ background:C.white, borderBottom:`1px solid ${C.border}`, padding:"12px 20px", display:"flex", alignItems:"center", justifyContent:"space-between", position:"sticky", top:0, zIndex:100 }}>
         {screen ? (
-          <button onClick={closeGame} style={{ background:C.grayLt, color:C.gray, padding:"7px 14px", borderRadius:10, fontWeight:800, fontSize:13 }}>← Voltar</button>
+          <button onClick={closeGame} style={{ background:"transparent", color:C.gray, padding:"6px 12px", borderRadius:8, fontWeight:600, fontSize:14, display:"flex", alignItems:"center", gap:4 }}>← Voltar</button>
         ) : (
-          <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-            <div style={{ width:36, height:36, background:`linear-gradient(135deg,${C.blue},${C.blueMid})`, borderRadius:10, display:"flex", alignItems:"center", justifyContent:"center", fontSize:20 }}>📖</div>
-            <div style={{ lineHeight:1 }}>
-              <span style={{ fontWeight:900, color:C.blue, fontSize:15 }}>Nativ </span>
-              <span style={{ fontWeight:900, color:C.orange, fontSize:15 }}>Ivrit</span>
+          <div style={{ display:"flex", alignItems:"center", gap:12 }}>
+            <div style={{ width:40, height:40, background:C.blue, borderRadius:12, display:"flex", alignItems:"center", justifyContent:"center", fontSize:20, color:C.white, fontWeight:600 }}>א</div>
+            <div>
+              <div style={{ fontWeight:700, color:C.navy, fontSize:16 }}>Nativ</div>
+              <div style={{ fontWeight:500, color:C.gray, fontSize:12 }}>עִבְרִית</div>
             </div>
           </div>
         )}
         <div style={{ display:"flex", gap:8 }}>
           <Pill icon="🔥" val={streak} color={C.orange} bg={C.orangeLt}/>
-          <Pill icon="⚡" val={`${xp} XP`} color={C.blue} bg={C.blueLt}/>
+          <Pill icon="⭐" val={xp} color={C.blue} bg={C.blueLt}/>
         </div>
       </div>
 
       {/* CONTENT */}
-      <div style={{ flex:1, overflowY:"auto", paddingBottom: screen ? 0 : 72 }}>
+      <div style={{ flex:1, overflowY:"auto", paddingBottom: screen ? 0 : 80 }}>
         {screen==="fc"       && <FlashcardGame deck={WORDS} idx={fcIdx} flip={fcFlip} known={fcKnown} setFlip={setFcFlip} next={fcNext}/>}
         {screen==="match"    && <MatchGame left={leftItems} right={rightItems} sel={mSel} done={mDone} wrong={mWrong} score={mScore} allDone={Object.keys(mDone).length===matchWords.length} onSelect={handleMatch}/>}
         {screen==="football" && <FootballQuiz words={FOOTBALL} idx={fqIdx} opts={fqOpts} sel={fqSel} score={fqScore} done={fqDone} combo={fqCombo} onAnswer={handleFQ} onNext={nextFQ}/>}
         {screen==="riddle"   && <RiddleGame riddles={RIDDLES} idx={rdIdx} sel={rdSel} score={rdScore} done={rdDone} combo={rdCombo} onAnswer={handleRiddle} onNext={nextRiddle}/>}
         {screen==="penalty"  && <PenaltyGame onXp={(n)=>setXp(x=>x+n)}/>}
 
-        {!screen && tab==="home"  && <HomeTab xp={xp} setTab={setTab} goGame={goGame}/>}
+        {!screen && tab==="home"  && <HomeTab xp={xp} goGame={goGame}/>}
         {!screen && tab==="learn" && <LearnTab levels={LEVELS} xp={xp} goGame={goGame}/>}
         {!screen && tab==="games" && <GamesTab goGame={goGame}/>}
         {!screen && tab==="chat"  && <ChatTab messages={messages} input={chatInput} setInput={setChatInput} onSend={sendMsg} chatRef={chatRef}/>}
@@ -236,12 +231,11 @@ export default function NativIvrit() {
 
       {/* BOTTOM NAV */}
       {!screen && (
-        <nav style={{ position:"fixed", bottom:0, left:"50%", transform:"translateX(-50%)", width:"100%", maxWidth:480, background:C.white, borderTop:`2px solid ${C.border}`, display:"flex", zIndex:200 }}>
+        <nav style={{ position:"fixed", bottom:0, left:"50%", transform:"translateX(-50%)", width:"100%", maxWidth:480, background:C.white, borderTop:`1px solid ${C.border}`, display:"flex", zIndex:100 }}>
           {TABS.map(t=>(
-            <button key={t.id} onClick={()=>setTab(t.id)} style={{ flex:1, background:"none", padding:"8px 0 10px", display:"flex", flexDirection:"column", alignItems:"center", gap:2 }}>
-              <div style={{ fontSize:22, transform:tab===t.id?"scale(1.18)":"scale(1)", transition:"transform .2s" }}>{t.icon}</div>
-              <div style={{ fontSize:10, fontWeight:800, color:tab===t.id?C.blue:C.gray }}>{t.label}</div>
-              {tab===t.id && <div style={{ width:18, height:3, background:`linear-gradient(90deg,${C.blue},${C.orange})`, borderRadius:2 }}/>}
+            <button key={t.id} onClick={()=>setTab(t.id)} style={{ flex:1, background:"transparent", padding:"12px 4px", display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
+              <div style={{ fontSize:20, color:tab===t.id?C.blue:C.gray, fontWeight:tab===t.id?600:400 }}>{t.icon}</div>
+              <div style={{ fontSize:11, fontWeight:500, color:tab===t.id?C.navy:C.gray }}>{t.label}</div>
             </button>
           ))}
         </nav>
@@ -250,45 +244,85 @@ export default function NativIvrit() {
   );
 }
 
-// ── PILL ─────────────────────────────────────────────────────────────────────
 function Pill({icon,val,color,bg}){
-  return <div style={{ display:"flex", alignItems:"center", gap:4, background:bg, borderRadius:20, padding:"5px 11px" }}><span style={{fontSize:14}}>{icon}</span><span style={{fontWeight:800,color,fontSize:13}}>{val}</span></div>;
+  return (
+    <div style={{ 
+      display:"flex", alignItems:"center", gap:6, 
+      background:bg, borderRadius:999, padding:"6px 12px", 
+      border:`1px solid ${color}20`, fontSize:13, fontWeight:600 
+    }}>
+      <span style={{fontSize:14}}>{icon}</span>
+      <span style={{color}}>{val}</span>
+    </div>
+  );
 }
 
-// ── HOME ─────────────────────────────────────────────────────────────────────
-function HomeTab({xp,setTab,goGame}){
+function HomeTab({xp,goGame}){
   return (
-    <div className="fadeUp" style={{padding:"20px 18px"}}>
-      <div style={{ background:`linear-gradient(135deg,${C.navy},${C.blue} 55%,${C.blueMid} 100%)`, borderRadius:24, padding:"26px 22px 22px", marginBottom:20, position:"relative", overflow:"hidden", boxShadow:`0 8px 0 #0a1e52` }}>
-        <div style={{ position:"absolute",top:-40,right:-40,width:130,height:130,borderRadius:"50%",background:"rgba(255,255,255,.06)" }}/>
-        <div style={{ position:"absolute",bottom:-16,right:14,fontSize:60,opacity:.1 }}>🇮🇱</div>
-        <div style={{ fontSize:11,color:"rgba(255,255,255,.5)",fontWeight:800,letterSpacing:2,textTransform:"uppercase",marginBottom:6 }}>נָתִיב עִבְרִית</div>
-        <h1 style={{ fontSize:23,fontWeight:900,color:"#fff",lineHeight:1.3,marginBottom:12 }}>Bem-vindo de volta!<br/><span style={{color:C.orangeMid}}>Continue aprendendo 🚀</span></h1>
-        <div style={{ display:"flex",justifyContent:"space-between",marginBottom:5 }}>
-          <span style={{fontSize:12,color:"rgba(255,255,255,.6)",fontWeight:700}}>Nível Alef → Bet</span>
-          <span style={{fontSize:12,color:C.orangeMid,fontWeight:900}}>{xp}/200 XP</span>
+    <div className="fadeUp" style={{padding:"24px 20px"}}>
+      <div style={{ 
+        background:"linear-gradient(135deg,#1E3A8A 0%,#1D4ED8 100%)", 
+        borderRadius:20, padding:"28px 24px", marginBottom:24, 
+        position:"relative", overflow:"hidden", 
+        boxShadow:"0 10px 25px rgba(30,58,138,.15)"
+      }}>
+        <div style={{ 
+          position:"absolute", top:0, right:0, width:120, height:120, 
+          background:"rgba(255,255,255,.08)", borderRadius:"50%" 
+        }}/>
+        <h1 style={{ 
+          fontSize:24, fontWeight:700, color:"#fff", lineHeight:1.3, 
+          marginBottom:16 
+        }}>
+          Bem-vindo(a)
+        </h1>
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:12 }}>
+          <span style={{ fontSize:13, color:"rgba(255,255,255,.8)", fontWeight:500 }}>Nível Alef</span>
+          <span style={{ fontSize:13, color:"#FCD34D", fontWeight:600 }}>{xp} XP</span>
         </div>
-        <div style={{ background:"rgba(255,255,255,.18)",borderRadius:8,height:10,overflow:"hidden" }}>
-          <div style={{ width:`${Math.min((xp/200)*100,100)}%`,height:"100%",background:`linear-gradient(90deg,${C.orange},${C.orangeMid})`,borderRadius:8,transition:"width .6s" }}/>
+        <div style={{ background:"rgba(255,255,255,.15)", borderRadius:6, height:6, overflow:"hidden" }}>
+          <div style={{ 
+            width:`${Math.min((xp/200)*100,100)}%`, height:"100%", 
+            background:"#FCD34D", borderRadius:6, transition:"width .5s ease"
+          }}/>
         </div>
       </div>
-      <div style={{ background:C.white,borderRadius:20,padding:"18px",marginBottom:18,border:`2px solid ${C.border}`,textAlign:"center" }}>
-        <div style={{ fontSize:11,fontWeight:800,color:C.gray,letterSpacing:2,textTransform:"uppercase",marginBottom:10 }}>✨ Frase do Dia</div>
-        <div style={{ fontSize:32,direction:"rtl",fontWeight:900,color:C.blue,marginBottom:2 }}>מַה שְׁלוֹמְךָ?</div>
-        <div style={{ color:C.orange,fontWeight:800,fontSize:16 }}>Ma Shlomhá?</div>
-        <div style={{ color:C.gray,fontSize:13 }}>Como vai você?</div>
+
+      <div style={{ 
+        background:C.white, borderRadius:16, padding:"20px", marginBottom:20, 
+        border:`1px solid ${C.border}`, boxShadow:"0 2px 10px rgba(0,0,0,.05)"
+      }}>
+        <div style={{ fontSize:12, fontWeight:600, color:C.gray, marginBottom:12, textTransform:"uppercase", letterSpacing:"0.05em" }}>
+          Vocabulário do dia
+        </div>
+        <div style={{ fontSize:36, direction:"rtl", fontWeight:700, color:C.navy, marginBottom:4 }}>מַה שְׁלוֹמְךָ?</div>
+        <div style={{ color:C.orange, fontWeight:600, fontSize:16 }}>Ma Shlomhá?</div>
+        <div style={{ color:C.gray, fontSize:14 }}>Como você está?</div>
       </div>
-      <div style={{ fontSize:12,fontWeight:800,color:C.gray,letterSpacing:1,textTransform:"uppercase",marginBottom:12 }}>Jogue Agora</div>
-      <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:12 }}>
+
+      <div style={{ fontSize:13, fontWeight:600, color:C.gray, marginBottom:16, textTransform:"uppercase", letterSpacing:"0.05em" }}>
+        Exercícios recomendados
+      </div>
+      <div style={{ display:"grid", gridTemplateColumns:"1fr", gap:12 }}>
         {[
-          { id:"fc",      icon:"🃏", label:"Flashcards",   color:C.blue,    shadow:"#0d47a1" },
-          { id:"match",   icon:"🔗", label:"Liga Palavras", color:C.orange,  shadow:"#cc5500" },
-          { id:"riddle",  icon:"🧩", label:"Quiz",          color:C.navy,    shadow:"#060e2e" },
-          { id:"penalty", icon:"⚽", label:"Pênalti!",      color:"#1B5E20", shadow:"#0a2d0e" },
+          { id:"fc",      icon:"📖", label:"Flashcards",   desc:"Memorização ativa",    color:C.blue },
+          { id:"match",   icon:"🔗", label:"Associações",  desc:"Hebraico ↔ Português", color:C.orange },
+          { id:"riddle",  icon:"❓", label:"Quiz rápido",   desc:"Comprehension test",   color:C.navy },
+          { id:"penalty", icon:"⚽", label:"Pênaltis",      desc:"Vocabulário + pressão",color:"#B45309" },
         ].map(g=>(
-          <button key={g.id} onClick={()=>goGame(g.id)} style={{ background:g.color,borderRadius:20,padding:"20px 14px",display:"flex",flexDirection:"column",alignItems:"center",gap:8,boxShadow:`0 6px 0 ${g.shadow}` }}>
-            <div style={{fontSize:34}}>{g.icon}</div>
-            <div style={{fontSize:13,fontWeight:900,color:"#fff"}}>{g.label}</div>
+          <button key={g.id} onClick={()=>goGame(g.id)} style={{ 
+            background:C.white, border:`1px solid ${C.border}`, borderRadius:12, 
+            padding:"20px", display:"flex", alignItems:"center", gap:16,
+            boxShadow:"0 2px 8px rgba(0,0,0,.08)", transition:"all .2s"
+          }}>
+            <div style={{ width:56, height:56, borderRadius:12, background:`${g.color}20`, 
+              display:"flex", alignItems:"center", justifyContent:"center", fontSize:24 
+            }}>{g.icon}</div>
+            <div style={{ flex:1 }}>
+              <div style={{ fontWeight:600, fontSize:16, color:C.navy, marginBottom:2 }}>{g.label}</div>
+              <div style={{ fontSize:13, color:C.gray }}>{g.desc}</div>
+            </div>
+            <div style={{ color:g.color, fontWeight:600, fontSize:13 }}>→</div>
           </button>
         ))}
       </div>
@@ -296,70 +330,87 @@ function HomeTab({xp,setTab,goGame}){
   );
 }
 
-// ── LEARN ─────────────────────────────────────────────────────────────────────
 function LearnTab({levels,xp,goGame}){
   return (
-    <div className="fadeUp" style={{padding:"20px 18px"}}>
-      <h2 style={{fontSize:21,fontWeight:900,color:C.blue,marginBottom:4}}>Trilha de Aprendizado</h2>
-      <p style={{fontSize:13,color:C.gray,marginBottom:18}}>Complete lições para desbloquear novos níveis</p>
-      <div style={{background:C.white,borderRadius:16,padding:"14px 16px",marginBottom:22,border:`2px solid ${C.border}`}}>
-        <div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}>
-          <span style={{fontWeight:800,fontSize:13,color:"#444"}}>Progresso: Alef</span>
-          <span style={{fontWeight:900,fontSize:13,color:C.orange}}>{xp} / 200 XP</span>
+    <div className="fadeUp" style={{padding:"24px 20px"}}>
+      <h2 style={{fontSize:22,fontWeight:700,color:C.navy,marginBottom:6}}>Trilha de Estudos</h2>
+      <p style={{fontSize:14,color:C.gray,marginBottom:24}}>Progrida sistematicamente através dos níveis</p>
+      
+      <div style={{background:C.white,borderRadius:12,padding:"20px",marginBottom:24,border:`1px solid ${C.border}`,boxShadow:"0 2px 10px rgba(0,0,0,.05)"}}>
+        <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
+          <span style={{fontWeight:600,fontSize:14,color:C.navy}}>Progresso atual</span>
+          <span style={{fontWeight:700,fontSize:14,color:C.orange}}>{xp}/200 XP</span>
         </div>
-        <div style={{background:C.grayLt,borderRadius:8,height:10,overflow:"hidden"}}>
-          <div style={{width:`${Math.min((xp/200)*100,100)}%`,height:"100%",background:`linear-gradient(90deg,${C.orange},${C.orangeMid})`,borderRadius:8,transition:"width .5s"}}/>
+        <div style={{background:C.grayLt,borderRadius:6,height:8,overflow:"hidden"}}>
+          <div style={{width:`${Math.min((xp/200)*100,100)}%`,height:"100%",background:C.blue,borderRadius:6,transition:"width .5s ease"}}/>
         </div>
       </div>
+
       {levels.map(lvl=>(
-        <div key={lvl.id} style={{marginBottom:18}}>
-          <div style={{background:lvl.locked?C.grayLt:`linear-gradient(135deg,${C.blue},${C.blueMid})`,borderRadius:18,padding:"14px 18px",marginBottom:10,display:"flex",alignItems:"center",gap:14,boxShadow:lvl.locked?"none":`0 5px 0 #0d47a1`}}>
-            <div style={{fontSize:28,opacity:lvl.locked?.4:1}}>{lvl.locked?"🔒":lvl.icon}</div>
+        <div key={lvl.id} style={{marginBottom:20}}>
+          <div style={{ 
+            background:lvl.locked?C.grayLt:C.blue, borderRadius:12, padding:"16px 20px", 
+            marginBottom:12, display:"flex", alignItems:"center", gap:12,
+            boxShadow:lvl.locked?"none":"0 4px 12px rgba(30,58,138,.15)"
+          }}>
+            <div style={{fontSize:24,opacity:lvl.locked?.5:1}}>{lvl.locked?"🔒":lvl.icon}</div>
             <div style={{flex:1}}>
-              <div style={{fontWeight:900,fontSize:16,color:lvl.locked?C.gray:"#fff"}}>Unidade {lvl.id}: {lvl.title}</div>
-              <div style={{fontSize:12,fontWeight:700,color:lvl.locked?C.gray:"rgba(255,255,255,.7)"}}>{lvl.sub}</div>
+              <div style={{fontWeight:700,fontSize:16,color:lvl.locked?C.gray:C.white}}>Nível {lvl.id}: {lvl.title}</div>
+              <div style={{fontSize:13,fontWeight:500,color:lvl.locked?C.gray:"rgba(255,255,255,.8)"}}>{lvl.sub}</div>
             </div>
-            {!lvl.locked && <div style={{background:"rgba(255,255,255,.2)",borderRadius:10,padding:"4px 10px",color:"#fff",fontWeight:800,fontSize:12}}>Ativo ✓</div>}
           </div>
           {!lvl.locked && lvl.lessons.map(les=>(
-            <button key={les.id} onClick={()=>goGame("fc")} style={{width:"100%",background:C.white,border:`2px solid ${C.border}`,borderRadius:14,padding:"13px 16px",marginBottom:8,display:"flex",alignItems:"center",gap:14,boxShadow:`0 3px 0 ${C.border}`}}>
-              <div style={{width:42,height:42,borderRadius:13,background:C.blueLt,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>{les.icon}</div>
-              <div style={{flex:1,textAlign:"left"}}>
-                <div style={{fontWeight:800,fontSize:14,color:"#222"}}>{les.title}</div>
-                <div style={{fontSize:11,color:C.gray}}>+{les.xp} XP</div>
+            <button key={les.id} onClick={()=>goGame("fc")} style={{
+              width:"100%", background:C.white, border:`1px solid ${C.border}`, borderRadius:12, 
+              padding:"16px 20px", marginBottom:10, display:"flex", alignItems:"center", gap:12,
+              boxShadow:"0 2px 8px rgba(0,0,0,.08)"
+            }}>
+              <div style={{width:48,height:48,borderRadius:10,background:C.blueLt,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>{les.icon}</div>
+              <div style={{flex:1}}>
+                <div style={{fontWeight:600,fontSize:15,color:C.navy}}>{les.title}</div>
+                <div style={{fontSize:13,color:C.gray}}>{les.xp} XP</div>
               </div>
-              <div style={{background:`linear-gradient(135deg,${C.orange},${C.orangeMid})`,borderRadius:10,padding:"5px 12px",color:"#fff",fontWeight:900,fontSize:12,boxShadow:`0 3px 0 #cc5500`}}>Jogar ▶</div>
+              <div style={{background:C.blue,color:"white",borderRadius:8,padding:"6px 12px",fontWeight:600,fontSize:12}}>Iniciar</div>
             </button>
           ))}
-          {lvl.locked && <div style={{background:C.grayLt,border:`2px dashed ${C.border}`,borderRadius:14,padding:"14px",textAlign:"center",marginBottom:8}}><span style={{color:C.gray,fontSize:13,fontWeight:700}}>🔒 Complete o nível anterior para desbloquear</span></div>}
+          {lvl.locked && (
+            <div style={{background:C.grayLt,border:`1px dashed ${C.border}`,borderRadius:12,padding:"16px",textAlign:"center"}}>
+              <span style={{color:C.gray,fontSize:14,fontWeight:500}}>Complete o nível anterior</span>
+            </div>
+          )}
         </div>
       ))}
     </div>
   );
 }
 
-// ── GAMES MENU ────────────────────────────────────────────────────────────────
 function GamesTab({goGame}){
   const games=[
-    { id:"fc",      icon:"🃏", title:"Flashcards",      desc:"Memorize com cartas animadas",    color:C.blue,    shadow:"#0d47a1", xp:"+3 XP/carta"  },
-    { id:"match",   icon:"🔗", title:"Liga as Palavras", desc:"Conecte hebraico e português",    color:C.orange,  shadow:"#cc5500", xp:"+4 XP/par"    },
-    { id:"riddle",  icon:"🧩", title:"Quiz Rápido",      desc:"Múltipla escolha com combo 🔥",   color:C.navy,    shadow:"#060e2e", xp:"+5 XP/acerto" },
-    { id:"penalty", icon:"⚽", title:"Pênalti Hebraico", desc:"Responda e faça gol no goleiro!", color:"#1B5E20", shadow:"#0a2d0e", xp:"+5 XP/gol"    },
-    { id:"football",icon:"🏟️", title:"Quiz de Futebol",  desc:"Vocabulário do esporte favorito", color:"#0D47A1", shadow:"#082a6e", xp:"+5 XP/acerto" },
+    { id:"fc",      icon:"📖", title:"Flashcards",      desc:"Memorização sistemática", color:C.blue, xp:3 },
+    { id:"match",   icon:"🔗", title:"Associações",     desc:"Relacionar palavras",     color:C.orange, xp:4 },
+    { id:"riddle",  icon:"❓", title:"Compreensão",     desc:"Teste de múltipla escolha",color:C.navy, xp:5 },
+    { id:"penalty", icon:"⚽", title:"Pênaltis",        desc:"Desafio sob pressão",     color:"#B45309", xp:5 },
+    { id:"football",icon:"🏟️", title:"Vocabulário Esportivo", desc:"Termos de futebol", color:"#1E40AF", xp:5 },
   ];
   return (
-    <div className="fadeUp" style={{padding:"20px 18px"}}>
-      <h2 style={{fontSize:21,fontWeight:900,color:C.blue,marginBottom:4}}>Jogos</h2>
-      <p style={{fontSize:13,color:C.gray,marginBottom:18}}>Ganhe XP e suba de nível jogando</p>
-      <div style={{display:"flex",flexDirection:"column",gap:14}}>
-        {games.map((g,i)=>(
-          <button key={g.id} onClick={()=>goGame(g.id)} className="pop" style={{animationDelay:`${i*.07}s`,opacity:0,animationFillMode:"forwards",background:g.color,borderRadius:22,padding:"18px 20px",display:"flex",alignItems:"center",gap:18,boxShadow:`0 6px 0 ${g.shadow}`,textAlign:"left"}}>
-            <div style={{width:62,height:62,borderRadius:18,background:"rgba(255,255,255,.14)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:34,flexShrink:0}}>{g.icon}</div>
-            <div style={{flex:1}}>
-              <div style={{fontWeight:900,fontSize:17,color:"#fff",marginBottom:3}}>{g.title}</div>
-              <div style={{fontSize:13,color:"rgba(255,255,255,.7)"}}>{g.desc}</div>
+    <div className="fadeUp" style={{padding:"24px 20px"}}>
+      <h2 style={{fontSize:22,fontWeight:700,color:C.navy,marginBottom:6}}>Exercícios</h2>
+      <p style={{fontSize:14,color:C.gray,marginBottom:24}}>Pratique e ganhe experiência</p>
+      <div style={{display:"flex",flexDirection:"column",gap:12}}>
+        {games.map((g)=>(
+          <button key={g.id} onClick={()=>goGame(g.id)} style={{ 
+            background:C.white, border:`1px solid ${C.border}`, borderRadius:12, 
+            padding:"20px", display:"flex", alignItems:"center", gap:16,
+            boxShadow:"0 2px 10px rgba(0,0,0,.08)", transition:"all .2s"
+          }}>
+            <div style={{ width:60, height:60, borderRadius:12, background:`${g.color}10`, 
+              display:"flex", alignItems:"center", justifyContent:"center", fontSize:24 
+            }}>{g.icon}</div>
+            <div style={{ flex:1 }}>
+              <div style={{ fontWeight:600, fontSize:16, color:C.navy, marginBottom:2 }}>{g.title}</div>
+              <div style={{ fontSize:13, color:C.gray }}>{g.desc}</div>
             </div>
-            <div style={{background:"rgba(255,255,255,.18)",borderRadius:12,padding:"5px 11px",color:"#fff",fontWeight:900,fontSize:12,flexShrink:0}}>{g.xp}</div>
+            <div style={{ color:g.color, fontWeight:600, fontSize:13, marginRight:8 }}>+{g.xp} XP</div>
           </button>
         ))}
       </div>
@@ -367,112 +418,190 @@ function GamesTab({goGame}){
   );
 }
 
-// ── CHAT ──────────────────────────────────────────────────────────────────────
 function ChatTab({messages,input,setInput,onSend,chatRef}){
   return (
     <div style={{display:"flex",flexDirection:"column",height:"calc(100vh - 130px)"}}>
-      <div style={{padding:"14px 18px 10px",borderBottom:`2px solid ${C.border}`,background:C.white}}>
-        <h2 style={{fontSize:18,fontWeight:900,color:C.blue}}>💬 Comunidade</h2>
-        <div style={{display:"flex",alignItems:"center",gap:6,marginTop:3}}>
-          <div style={{width:8,height:8,borderRadius:"50%",background:"#4CAF50",animation:"pulseGreen 2s infinite"}}/>
-          <span style={{fontSize:12,color:C.gray,fontWeight:700}}>67 alunos online agora</span>
+      <div style={{padding:"16px 20px",borderBottom:`1px solid ${C.border}`,background:C.white}}>
+        <h2 style={{fontSize:18,fontWeight:700,color:C.navy}}>Fórum da Comunidade</h2>
+        <div style={{display:"flex",alignItems:"center",gap:8,marginTop:4}}>
+          <div style={{width:6,height:6,borderRadius:"50%",background:C.blue}}/>
+          <span style={{fontSize:13,color:C.gray,fontWeight:500}}>42 membros ativos</span>
         </div>
       </div>
-      <div ref={chatRef} style={{flex:1,overflowY:"auto",padding:"14px 16px",display:"flex",flexDirection:"column",gap:11,background:C.bg}}>
-        {messages.map((m,i)=>(
-          <div key={m.id} className="slideIn" style={{animationDelay:`${i*.04}s`,display:"flex",flexDirection:m.mine?"row-reverse":"row",alignItems:"flex-end",gap:8}}>
-            {!m.mine && <div style={{width:36,height:36,borderRadius:12,background:`linear-gradient(135deg,${C.blue},${C.blueMid})`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>{m.avatar}</div>}
-            <div style={{maxWidth:"75%"}}>
-              {!m.mine && <div style={{fontSize:11,fontWeight:800,color:C.gray,marginBottom:3}}>{m.user}</div>}
-              <div style={{background:m.mine?`linear-gradient(135deg,${C.orange},${C.orangeMid})`:C.white,borderRadius:m.mine?"18px 18px 4px 18px":"18px 18px 18px 4px",padding:"11px 14px",boxShadow:m.mine?`0 3px 0 #cc5500`:`0 3px 0 ${C.border}`,border:m.mine?"none":`2px solid ${C.border}`}}>
-                <div style={{fontSize:14,fontWeight:700,color:m.mine?"#fff":"#222",lineHeight:1.5}}>{m.msg}</div>
+      <div ref={chatRef} style={{flex:1,overflowY:"auto",padding:"20px",display:"flex",flexDirection:"column",gap:12,background:C.bg}}>
+        {messages.map((m)=>(
+          <div key={m.id} className="slideIn" style={{display:"flex",flexDirection:m.mine?"row-reverse":"row",alignItems:"flex-start",gap:12}}>
+            {!m.mine && (
+              <div style={{ width:40, height:40, borderRadius:20, background:C.blueLt, 
+                display:"flex", alignItems:"center", justifyContent:"center", fontSize:18 
+              }}>{m.avatar}</div>
+            )}
+            <div style={{ maxWidth:"70%" }}>
+              {!m.mine && (
+                <div style={{ fontSize:12, fontWeight:600, color:C.gray, marginBottom:4 }}>{m.user}</div>
+              )}
+              <div style={{ 
+                background:m.mine?C.orangeLt:C.white, 
+                borderRadius:16, padding:"12px 16px", 
+                border:`1px solid ${m.mine?C.orange:C.border}`,
+                boxShadow:"0 1px 3px rgba(0,0,0,.1)"
+              }}>
+                <div style={{ fontSize:14, fontWeight:500, color:m.mine?C.orange:C.navy, lineHeight:1.5 }}>
+                  {m.msg}
+                </div>
               </div>
-              <div style={{fontSize:10,color:C.gray,marginTop:3,textAlign:m.mine?"right":"left",fontWeight:600}}>{m.time}</div>
+              <div style={{ fontSize:11, color:C.gray, marginTop:4, fontWeight:500 }}>
+                {m.time}
+              </div>
             </div>
           </div>
         ))}
       </div>
-      <div style={{padding:"10px 14px 14px",background:C.white,borderTop:`2px solid ${C.border}`,display:"flex",gap:10}}>
-        <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&onSend()} placeholder="Escreva uma mensagem..." style={{flex:1,background:C.grayLt,border:`2px solid ${C.border}`,borderRadius:14,padding:"11px 14px",fontSize:14,color:"#222",fontWeight:600}}/>
-        <button onClick={onSend} disabled={!input.trim()} style={{background:input.trim()?`linear-gradient(135deg,${C.orange},${C.orangeMid})`:C.grayLt,borderRadius:14,width:46,height:46,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,boxShadow:input.trim()?`0 4px 0 #cc5500`:"none",flexShrink:0,color:input.trim()?"#fff":C.gray}}>➤</button>
+      <div style={{ padding:"16px 20px", background:C.white, borderTop:`1px solid ${C.border}`, display:"flex", gap:12 }}>
+        <input 
+          value={input} 
+          onChange={e=>setInput(e.target.value)} 
+          onKeyDown={e=>e.key==="Enter"&&onSend()}
+          placeholder="Digite sua mensagem..." 
+          style={{ 
+            flex:1, background:C.grayLt, border:`1px solid ${C.border}`, borderRadius:12, 
+            padding:"12px 16px", fontSize:14, color:C.navy, fontWeight:500 
+          }} 
+        />
+        <button 
+          onClick={onSend} 
+          disabled={!input.trim()} 
+          style={{ 
+            background:input.trim()?C.blue:C.grayLt, borderRadius:12, width:48, height:48, 
+            display:"flex", alignItems:"center", justifyContent:"center", fontSize:16,
+            color:input.trim()?"white":C.gray, fontWeight:600 
+          }}
+        >
+          →
+        </button>
       </div>
     </div>
   );
 }
 
-// ── FLASHCARD GAME ────────────────────────────────────────────────────────────
 function FlashcardGame({deck,idx,flip,known,setFlip,next}){
   const card=deck[idx];
   return (
-    <div className="fadeUp" style={{padding:"20px 18px"}}>
-      <div style={{background:C.grayLt,borderRadius:8,height:10,marginBottom:18,overflow:"hidden"}}>
-        <div style={{width:`${((idx+1)/deck.length)*100}%`,height:"100%",background:`linear-gradient(90deg,${C.blue},${C.orange})`,transition:"width .4s"}}/>
+    <div className="fadeUp" style={{padding:"24px 20px"}}>
+      <div style={{background:C.grayLt,borderRadius:6,height:6,marginBottom:20,overflow:"hidden"}}>
+        <div style={{width:`${((idx+1)/deck.length)*100}%`,height:"100%",background:C.blue,transition:"width .4s ease"}}/>
       </div>
-      <div style={{display:"flex",justifyContent:"space-between",marginBottom:20,alignItems:"center"}}>
-        <span style={{fontSize:13,color:C.gray,fontWeight:700}}>Carta {idx+1}/{deck.length}</span>
-        <Pill icon="✅" val={`${known.size} conhecidas`} color={C.orange} bg={C.orangeLt}/>
+      <div style={{display:"flex",justifyContent:"space-between",marginBottom:24,alignItems:"center"}}>
+        <span style={{fontSize:14,color:C.gray,fontWeight:500}}>Flashcard {idx+1}/{deck.length}</span>
+        <Pill icon="✓" val={known.size} color={C.blue} bg={C.blueLt}/>
       </div>
-      <div className="flip-wrap" style={{height:270,marginBottom:22,cursor:"pointer"}} onClick={()=>setFlip(f=>!f)}>
-        <div className={`flip-inner ${flip?"on":""}`} style={{height:270}}>
-          <div className="flip-face" style={{background:`linear-gradient(150deg,${C.navy},${C.blue})`,boxShadow:`0 10px 0 #0a1e52`}}>
-            <div style={{fontSize:13,color:"rgba(255,255,255,.4)",fontWeight:800,letterSpacing:2,textTransform:"uppercase",marginBottom:12}}>{card.emoji} hebraico</div>
-            <div style={{fontSize:52,direction:"rtl",fontWeight:900,color:"#fff",textAlign:"center",lineHeight:1.1}}>{card.heb}</div>
-            <div style={{marginTop:10,color:C.orangeMid,fontWeight:800,fontSize:20}}>{card.tr}</div>
-            <div style={{marginTop:28,fontSize:12,color:"rgba(255,255,255,.3)"}}>toque para traduzir ↻</div>
+      <div className="flip-wrap" style={{height:260,marginBottom:24}} onClick={()=>setFlip(f=>!f)}>
+        <div className={`flip-inner ${flip?"flipped":""}`} style={{height:260}}>
+          <div className="flip-face" style={{ 
+            background:"linear-gradient(135deg,#1E3A8A,#1D4ED8)", 
+            boxShadow:"0 8px 20px rgba(30,58,138,.2)"
+          }}>
+            <div style={{fontSize:12,color:"rgba(255,255,255,.6)",fontWeight:500,marginBottom:16}}>Hebraico</div>
+            <div style={{fontSize:48,direction:"rtl",fontWeight:700,color:"white",textAlign:"center",lineHeight:1.1}}>{card.heb}</div>
+            <div style={{marginTop:12,color:"#FCD34D",fontWeight:600,fontSize:18}}>{card.tr}</div>
           </div>
-          <div className="flip-face flip-back" style={{background:`linear-gradient(150deg,${C.orange},${C.orangeMid})`,boxShadow:`0 10px 0 #cc5500`}}>
-            <div style={{fontSize:13,color:"rgba(255,255,255,.5)",fontWeight:800,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>tradução</div>
-            <div style={{fontSize:32,fontWeight:900,color:"#fff",textAlign:"center",marginBottom:8}}>{card.pt}</div>
-            <div style={{fontSize:28,direction:"rtl",color:"rgba(255,255,255,.85)",fontWeight:800}}>{card.heb}</div>
-            <div style={{color:"rgba(255,255,255,.7)",fontWeight:700,fontSize:18,marginTop:4}}>{card.tr}</div>
+          <div className="flip-back flip-face" style={{ 
+            background:"linear-gradient(135deg,#B45309,#D97706)", 
+            boxShadow:"0 8px 20px rgba(180,83,9,.2)"
+          }}>
+            <div style={{fontSize:12,color:"rgba(255,255,255,.6)",fontWeight:500,marginBottom:12}}>Português</div>
+            <div style={{fontSize:28,fontWeight:700,color:"white",textAlign:"center",marginBottom:8}}>{card.pt}</div>
+            <div style={{fontSize:24,direction:"rtl",color:"rgba(255,255,255,.9)",fontWeight:600}}>{card.heb}</div>
           </div>
         </div>
       </div>
       {flip ? (
-        <div className="fadeUp" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-          <button onClick={()=>next(false)} style={{background:C.white,border:`2.5px solid ${C.red}`,color:C.red,padding:"15px",borderRadius:16,fontWeight:900,fontSize:15,boxShadow:`0 4px 0 #b71c1c`}}>😅 Rever</button>
-          <button onClick={()=>next(true)}  style={{background:`linear-gradient(135deg,${C.orange},${C.orangeMid})`,color:"#fff",padding:"15px",borderRadius:16,fontWeight:900,fontSize:15,boxShadow:`0 4px 0 #cc5500`}}>✅ Sei!</button>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+          <button onClick={()=>next(false)} style={{
+            background:C.white, border:`1px solid ${C.red}`, color:C.red, padding:"16px",
+            borderRadius:12, fontWeight:600, fontSize:15, boxShadow:"0 2px 8px rgba(0,0,0,.1)"
+          }}>Não sei</button>
+          <button onClick={()=>next(true)} style={{
+            background:C.blue, color:"white", padding:"16px", borderRadius:12,
+            fontWeight:600, fontSize:15, boxShadow:"0 4px 12px rgba(30,58,138,.3)"
+          }}>Conheço</button>
         </div>
       ) : (
-        <div style={{textAlign:"center",color:C.gray,fontSize:14,fontWeight:700,background:C.white,borderRadius:14,padding:"14px",border:`2px solid ${C.border}`}}>🤔 Pense na tradução antes de virar a carta</div>
+        <div style={{
+          textAlign:"center", color:C.gray, fontSize:14, fontWeight:500,
+          background:C.white, borderRadius:12, padding:"16px", border:`1px solid ${C.border}`
+        }}>
+          Toque para ver a tradução
+        </div>
       )}
     </div>
   );
 }
 
-// ── MATCH GAME ────────────────────────────────────────────────────────────────
 function MatchGame({left,right,sel,done,wrong,score,allDone,onSelect}){
   return (
-    <div className="fadeUp" style={{padding:"20px 18px"}}>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-        <h2 style={{fontSize:20,fontWeight:900,color:C.orange}}>🔗 Liga as Palavras</h2>
+    <div className="fadeUp" style={{padding:"24px 20px"}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+        <h2 style={{fontSize:20,fontWeight:700,color:C.navy}}>Associações</h2>
         <Pill icon="⭐" val={`${score}/${left.length}`} color={C.orange} bg={C.orangeLt}/>
       </div>
-      <p style={{fontSize:13,color:C.gray,marginBottom:18}}>Selecione um par de cada lado</p>
+      <p style={{fontSize:14,color:C.gray,marginBottom:24}}>Conecte palavras equivalentes</p>
+      
       {allDone ? (
-        <div style={{textAlign:"center",paddingTop:50}}>
-          <div className="wiggle" style={{fontSize:80,display:"inline-block",marginBottom:14}}>🎉</div>
-          <h3 style={{fontSize:26,fontWeight:900,color:C.orange,marginBottom:8}}>Perfeito!</h3>
-          <p style={{color:C.gray}}>Todos os pares conectados!</p>
+        <div style={{textAlign:"center",paddingTop:60}}>
+          <div style={{fontSize:64,marginBottom:16}}>✓</div>
+          <h3 style={{fontSize:24,fontWeight:700,color:C.blue,marginBottom:8}}>Concluído</h3>
+          <p style={{color:C.gray,fontSize:14}}>Todos os pares foram associados</p>
         </div>
       ) : (
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
           <div>
-            <div style={{fontSize:11,fontWeight:800,color:C.gray,textTransform:"uppercase",letterSpacing:1,marginBottom:8,textAlign:"center"}}>עברית</div>
+            <div style={{fontSize:12,fontWeight:600,color:C.gray,marginBottom:12,textAlign:"center",textTransform:"uppercase",letterSpacing:"0.05em"}}>Hebraico</div>
             {left.map(item=>{
               const matched=done[item.id],isSel=sel?.id===item.id&&sel?.type==="heb",isWrong=wrong===item.id;
-              return <button key={item.id} className={isWrong?"shake":matched?"pop":""} onClick={()=>!matched&&onSelect({...item,type:"heb"})} style={{width:"100%",marginBottom:8,padding:"13px 10px",borderRadius:14,border:`2.5px solid ${matched?C.orange:isSel?C.blue:C.border}`,background:matched?C.orangeLt:isSel?C.blueLt:C.white,color:matched?C.orange:isSel?C.blue:"#222",fontSize:19,direction:"rtl",fontWeight:900,boxShadow:`0 3px 0 ${matched?"#cc5500":isSel?"#0d47a1":C.border}`,cursor:matched?"default":"pointer"}}>
-                {item.label}<div style={{fontSize:10,color:matched?C.orange:isSel?C.blue:C.gray,direction:"ltr",fontWeight:700,marginTop:2}}>{item.sub}</div>
-              </button>;
+              return (
+                <button key={item.id} className={isWrong?"shake":""} 
+                  onClick={()=>!matched&&onSelect({...item,type:"heb"})} 
+                  disabled={matched}
+                  style={{
+                    width:"100%", marginBottom:12, padding:"16px", borderRadius:12,
+                    border:`1px solid ${matched?C.orange:isSel?C.blue:C.border}`,
+                    background:matched?C.orangeLt:isSel?C.blueLt:C.white,
+                    color:matched?C.orange:isSel?C.blue:C.navy,
+                    fontSize:20, direction:"rtl", fontWeight:600,
+                    boxShadow:"0 2px 8px rgba(0,0,0,.1)",
+                    cursor:matched?"default":"pointer"
+                  }}
+                >
+                  {item.label}
+                  {matched && <div style={{fontSize:11,color:C.orange,direction:"ltr",fontWeight:500,marginTop:4}}>{item.sub}</div>}
+                </button>
+              );
             })}
           </div>
           <div>
-            <div style={{fontSize:11,fontWeight:800,color:C.gray,textTransform:"uppercase",letterSpacing:1,marginBottom:8,textAlign:"center"}}>Português</div>
+            <div style={{fontSize:12,fontWeight:600,color:C.gray,marginBottom:12,textAlign:"center",textTransform:"uppercase",letterSpacing:"0.05em"}}>Português</div>
             {right.map(item=>{
               const matched=done[item.id],isSel=sel?.id===item.id&&sel?.type==="pt",isWrong=wrong===item.id;
-              return <button key={item.id} className={isWrong?"shake":matched?"pop":""} onClick={()=>!matched&&onSelect({...item,type:"pt"})} style={{width:"100%",marginBottom:8,padding:"13px 10px",borderRadius:14,border:`2.5px solid ${matched?C.orange:isSel?C.orange:C.border}`,background:matched?C.orangeLt:isSel?C.orangeLt:C.white,color:matched?C.orange:isSel?C.orange:"#222",fontSize:14,fontWeight:800,boxShadow:`0 3px 0 ${matched?"#cc5500":isSel?"#cc5500":C.border}`,cursor:matched?"default":"pointer"}}>
-                <span style={{fontSize:20}}>{item.emoji} </span>{item.label}
-              </button>;
+              return (
+                <button key={item.id} className={isWrong?"shake":""} 
+                  onClick={()=>!matched&&onSelect({...item,type:"pt"})} 
+                  disabled={matched}
+                  style={{
+                    width:"100%", marginBottom:12, padding:"16px", borderRadius:12,
+                    border:`1px solid ${matched?C.orange:isSel?C.orange:C.border}`,
+                    background:matched?C.orangeLt:isSel?C.orangeLt:C.white,
+                    color:matched?C.orange:isSel?C.orange:C.navy,
+                    fontSize:15, fontWeight:600,
+                    boxShadow:"0 2px 8px rgba(0,0,0,.1)",
+                    cursor:matched?"default":"pointer",
+                    display:"flex", alignItems:"center", gap:8
+                  }}
+                >
+                  <span style={{fontSize:24}}>{item.emoji}</span>
+                  {item.label}
+                </button>
+              );
             })}
           </div>
         </div>
@@ -481,88 +610,141 @@ function MatchGame({left,right,sel,done,wrong,score,allDone,onSelect}){
   );
 }
 
-// ── FOOTBALL QUIZ ─────────────────────────────────────────────────────────────
 function FootballQuiz({words,idx,opts,sel,score,done,combo,onAnswer,onNext}){
   const cur=words[idx];
   return (
-    <div className="fadeUp" style={{padding:"20px 18px"}}>
-      <div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}>
-        <Pill icon="⚽" val={`${score}/${words.length}`} color="#1B5E20" bg="#E8F5E9"/>
-        {combo>=2 && <Pill icon="🔥" val={`${combo}x combo!`} color={C.orange} bg={C.orangeLt}/>}
+    <div className="fadeUp" style={{padding:"24px 20px"}}>
+      <div style={{display:"flex",justifyContent:"space-between",marginBottom:16}}>
+        <Pill icon="⚽" val={`${score}/${words.length}`} color="#059669" bg="#F0FDF4"/>
+        {combo>=2 && <Pill icon="🔥" val={`${combo}x`} color={C.orange} bg={C.orangeLt}/>}
       </div>
-      <div style={{background:C.grayLt,borderRadius:8,height:8,marginBottom:18,overflow:"hidden"}}>
-        <div style={{width:`${(idx/words.length)*100}%`,height:"100%",background:"linear-gradient(90deg,#2E7D32,#66BB6A)",transition:"width .4s"}}/>
+      <div style={{background:C.grayLt,borderRadius:6,height:6,marginBottom:20,overflow:"hidden"}}>
+        <div style={{width:`${(idx/words.length)*100}%`,height:"100%",background:"#059669",transition:"width .4s ease"}}/>
       </div>
+      
       {done ? (
         <div style={{textAlign:"center",paddingTop:40}}>
-          <div className="wiggle" style={{fontSize:80,display:"inline-block",marginBottom:16}}>🏟️</div>
-          <div style={{background:"linear-gradient(135deg,#1B5E20,#2E7D32)",borderRadius:24,padding:"28px",marginBottom:24,boxShadow:"0 8px 0 #0a2d0e"}}>
-            <div style={{fontSize:54,fontWeight:900,color:"#fff"}}>{score}<span style={{color:"rgba(255,255,255,.35)",fontSize:30}}>/{words.length}</span></div>
-          </div>
+          <div style={{fontSize:72,marginBottom:16}}>🏆</div>
+          <div style={{fontSize:48,fontWeight:700,color:"#059669"}}>{score}/{words.length}</div>
         </div>
       ) : (
         <>
-          <div style={{background:"linear-gradient(135deg,#1B5E20,#2E7D32)",borderRadius:24,padding:"26px 20px",marginBottom:18,textAlign:"center",boxShadow:"0 8px 0 #0a2d0e"}}>
-            <div style={{fontSize:50,direction:"rtl",fontWeight:900,color:"#fff",lineHeight:1.1}}>{cur.heb}</div>
-            <div style={{color:"#A5D6A7",fontWeight:800,fontSize:20,marginTop:6}}>{cur.tr}</div>
-            <div style={{marginTop:6,fontSize:30}}>{cur.emoji}</div>
+          <div style={{ 
+            background:"linear-gradient(135deg,#059669,#10B981)", borderRadius:16, 
+            padding:"24px 20px", marginBottom:20, textAlign:"center",
+            boxShadow:"0 8px 20px rgba(5,150,105,.2)"
+          }}>
+            <div style={{fontSize:44,direction:"rtl",fontWeight:700,color:"white",lineHeight:1.1}}>{cur.heb}</div>
+            <div style={{color:"rgba(255,255,255,.9)",fontWeight:600,fontSize:16,marginTop:6}}>{cur.tr}</div>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:16}}>
             {opts.map(opt=>{
               const isCorrect=opt.pt===cur.pt,isSel=opt.pt===sel;
-              let bg=C.white,border=C.border,color="#222",shadow=C.border;
-              if(sel){ if(isCorrect){bg="#E8F5E9";border="#2E7D32";color="#1B5E20";shadow="#0a2d0e55";}else if(isSel){bg=C.redLt;border=C.red;color=C.red;shadow="#b71c1c55";} }
-              return <button key={opt.pt} className={sel&&isSel&&!isCorrect?"shake":""} onClick={()=>onAnswer(opt)} style={{padding:"16px 12px",borderRadius:16,fontWeight:800,fontSize:15,border:`2.5px solid ${border}`,background:bg,color,boxShadow:`0 4px 0 ${shadow}`,display:"flex",flexDirection:"column",alignItems:"center",gap:5,cursor:sel?"default":"pointer"}}><span style={{fontSize:28}}>{opt.emoji}</span>{opt.pt}</button>;
+              let bg=C.white,border=C.border,color=C.navy;
+              if(sel){ 
+                if(isCorrect){bg="#F0FDF4";border="#059669";color="#059669";} 
+                else if(isSel){bg=C.redLt;border=C.red;color=C.red;} 
+              }
+              return (
+                <button key={opt.pt} className={sel&&isSel&&!isCorrect?"shake":""} 
+                  onClick={()=>onAnswer(opt)} disabled={!!sel}
+                  style={{
+                    padding:"16px 12px", borderRadius:12, fontWeight:600, fontSize:15,
+                    border:`1px solid ${border}`, background:bg, color,
+                    boxShadow:"0 2px 8px rgba(0,0,0,.1)",
+                    display:"flex", flexDirection:"column", alignItems:"center", gap:6,
+                    cursor:sel?"default":"pointer"
+                  }}
+                >
+                  <span style={{fontSize:28}}>{opt.emoji}</span>
+                  {opt.pt}
+                </button>
+              );
             })}
           </div>
-          {sel && <button className="pop" onClick={onNext} style={{width:"100%",background:`linear-gradient(135deg,${C.orange},${C.orangeMid})`,color:"#fff",padding:"16px",borderRadius:16,fontWeight:900,fontSize:16,boxShadow:`0 5px 0 #cc5500`}}>{idx<words.length-1?"Próxima ⚽":"Ver Placar 🏟️"}</button>}
+          {sel && (
+            <button onClick={onNext} style={{
+              width:"100%", background:C.blue, color:"white", padding:"16px",
+              borderRadius:12, fontWeight:600, fontSize:15,
+              boxShadow:"0 4px 12px rgba(30,58,138,.3)"
+            }}>
+              {idx<words.length-1?"Continuar":"Finalizar"}
+            </button>
+          )}
         </>
       )}
     </div>
   );
 }
 
-// ── RIDDLE QUIZ ────────────────────────────────────────────────────────────────
 function RiddleGame({riddles,idx,sel,score,done,combo,onAnswer,onNext}){
   const r=riddles[idx];
   return (
-    <div className="fadeUp" style={{padding:"20px 18px"}}>
-      <div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}>
-        <Pill icon="🧩" val={`${score}/${riddles.length}`} color={C.navy} bg={C.blueLt}/>
-        {combo>=2 && <Pill icon="🔥" val={`${combo}x combo!`} color={C.orange} bg={C.orangeLt}/>}
+    <div className="fadeUp" style={{padding:"24px 20px"}}>
+      <div style={{display:"flex",justifyContent:"space-between",marginBottom:16}}>
+        <Pill icon="❓" val={`${score}/${riddles.length}`} color={C.navy} bg={C.blueLt}/>
+        {combo>=2 && <Pill icon="🔥" val={`${combo}x`} color={C.orange} bg={C.orangeLt}/>}
       </div>
-      <div style={{background:C.grayLt,borderRadius:8,height:8,marginBottom:18,overflow:"hidden"}}>
-        <div style={{width:`${(idx/riddles.length)*100}%`,height:"100%",background:`linear-gradient(90deg,${C.blue},${C.orange})`,transition:"width .4s"}}/>
+      <div style={{background:C.grayLt,borderRadius:6,height:6,marginBottom:20,overflow:"hidden"}}>
+        <div style={{width:`${(idx/riddles.length)*100}%`,height:"100%",background:C.blue,transition:"width .4s ease"}}/>
       </div>
+      
       {done ? (
         <div style={{textAlign:"center",paddingTop:40}}>
-          <div className="wiggle" style={{fontSize:80,display:"inline-block",marginBottom:14}}>{score>=4?"🏆":score>=2?"😊":"📚"}</div>
-          <h3 style={{fontSize:28,fontWeight:900,color:C.blue,marginBottom:6}}>{score}/{riddles.length} pontos</h3>
+          <div style={{fontSize:64,marginBottom:16}}>{score>=4?"⭐":score>=3?"✅":"📖"}</div>
+          <h3 style={{fontSize:24,fontWeight:700,color:C.navy,marginBottom:6}}>{score}/{riddles.length}</h3>
         </div>
       ) : (
         <>
-          <div style={{background:`linear-gradient(135deg,${C.navy},${C.blue})`,borderRadius:22,padding:"22px 20px",marginBottom:18,textAlign:"center",boxShadow:`0 8px 0 #0a1e52`}}>
-            <div style={{fontSize:42,marginBottom:10}}>{r.emoji}</div>
-            <div style={{fontSize:17,fontWeight:800,color:"#fff",lineHeight:1.5}}>{r.pre} <span style={{color:C.orangeMid}}>"{r.word}"</span> em hebraico?</div>
+          <div style={{ 
+            background:"linear-gradient(135deg,#1E3A8A,#1D4ED8)", borderRadius:16, 
+            padding:"24px 20px", marginBottom:20, textAlign:"center",
+            boxShadow:"0 8px 20px rgba(30,58,138,.2)"
+          }}>
+            <div style={{fontSize:40,marginBottom:12}}>{r.emoji}</div>
+            <div style={{fontSize:16,fontWeight:600,color:"white",lineHeight:1.4}}>
+              {r.pre} <span style={{color:"#FCD34D"}}>"{r.word}"</span>?
+            </div>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:16}}>
             {r.opts.map(opt=>{
               const isCorrect=opt===r.answer,isSel=opt===sel,isHeb=/[א-ת]/.test(opt);
-              let bg=C.white,border=C.border,color="#222",shadow=C.border;
-              if(sel){ if(isCorrect){bg=C.orangeLt;border=C.orange;color=C.orange;shadow="#cc550055";}else if(isSel){bg=C.redLt;border=C.red;color=C.red;shadow="#b71c1c55";} }
-              return <button key={opt} className={sel&&isSel&&!isCorrect?"shake":""} onClick={()=>onAnswer(opt)} style={{padding:"14px 10px",borderRadius:16,fontWeight:800,fontSize:isHeb?17:13,direction:isHeb?"rtl":"ltr",border:`2.5px solid ${border}`,background:bg,color,boxShadow:`0 4px 0 ${shadow}`,lineHeight:1.4,cursor:sel?"default":"pointer"}}>{opt}</button>;
+              let bg=C.white,border=C.border,color=C.navy;
+              if(sel){ 
+                if(isCorrect){bg=C.orangeLt;border=C.orange;color=C.orange;} 
+                else if(isSel){bg=C.redLt;border=C.red;color=C.red;} 
+              }
+              return (
+                <button key={opt} className={sel&&isSel&&!isCorrect?"shake":""} 
+                  onClick={()=>onAnswer(opt)} disabled={!!sel}
+                  style={{
+                    padding:"16px", borderRadius:12, fontWeight:600, 
+                    fontSize:isHeb?18:14, direction:isHeb?"rtl":"ltr",
+                    border:`1px solid ${border}`, background:bg, color,
+                    boxShadow:"0 2px 8px rgba(0,0,0,.1)",
+                    cursor:sel?"default":"pointer"
+                  }}
+                >
+                  {opt}
+                </button>
+              );
             })}
           </div>
-          {sel && <button className="pop" onClick={onNext} style={{width:"100%",background:`linear-gradient(135deg,${C.blue},${C.blueMid})`,color:"#fff",padding:"16px",borderRadius:16,fontWeight:900,fontSize:16,boxShadow:`0 5px 0 #0d47a1`}}>{idx<riddles.length-1?"Próxima →":"Ver Resultado 🎯"}</button>}
+          {sel && (
+            <button onClick={onNext} style={{
+              width:"100%", background:C.navy, color:"white", padding:"16px",
+              borderRadius:12, fontWeight:600, fontSize:15,
+              boxShadow:"0 4px 12px rgba(17,24,39,.3)"
+            }}>
+              {idx<riddles.length-1?"Próxima":"Concluído"}
+            </button>
+          )}
         </>
       )}
     </div>
   );
 }
 
-// ════════════════════════════════════════════════════════════════════════════
-// ── PENALTY GAME ─────────────────────────────────────────────────────────────
-// ════════════════════════════════════════════════════════════════════════════
 function PenaltyGame({ onXp }) {
   const [phase, setPhase]             = useState("intro");
   const [questions]                   = useState(() => shuffle(PENALTY_QUESTIONS).slice(0, TOTAL_KICKS));
@@ -607,7 +789,11 @@ function PenaltyGame({ onXp }) {
   const onPointerDown = (e) => { if (phase!=="aim") return; setIsDragging(true); getAimFromEvent(e, goalRef.current); };
   const onPointerMove = (e) => { if (!isDragging||phase!=="aim") return; getAimFromEvent(e, goalRef.current); };
   const onPointerUp   = () => setIsDragging(false);
-  useEffect(()=>{ window.addEventListener("pointerup",onPointerUp); return()=>window.removeEventListener("pointerup",onPointerUp); },[]);
+  
+  useEffect(()=>{ 
+    window.addEventListener("pointerup",onPointerUp); 
+    return()=>window.removeEventListener("pointerup",onPointerUp); 
+  },[]);
 
   const shoot = () => {
     if (phase!=="aim"||ballStage!=="idle") return;
@@ -618,7 +804,11 @@ function PenaltyGame({ onXp }) {
       ? (Math.random()<0.28 ? targetX : Math.random()*GW)
       : (Math.random()<0.68 ? targetX : Math.random()*GW);
     setBallSvg({ x: GW/2, y: GH+150 });
-    setTimeout(() => { setBallSvg({ x:targetX, y:targetY }); setKeeperX(keeperTargetX); setKeeperAnim("diving"); }, 60);
+    setTimeout(() => { 
+      setBallSvg({ x:targetX, y:targetY }); 
+      setKeeperX(keeperTargetX); 
+      setKeeperAnim("diving"); 
+    }, 60);
     setTimeout(() => {
       const isGoal = Math.abs(keeperTargetX - targetX) > 55;
       setShotResult(isGoal?"goal":"saved");
@@ -647,72 +837,131 @@ function PenaltyGame({ onXp }) {
   };
 
   return (
-    <div style={{ minHeight:"100vh", background:"linear-gradient(170deg,#0a1a4a 0%,#1565C0 100%)", fontFamily:"'Nunito',sans-serif", display:"flex", flexDirection:"column", alignItems:"center" }}>
+    <div style={{ 
+      minHeight:"100vh", 
+      background:"linear-gradient(170deg,#0f172a 0%,#1e3a8a 100%)", 
+      fontFamily:"'Inter',sans-serif", 
+      display:"flex", flexDirection:"column", alignItems:"center" 
+    }}>
 
       {/* Header */}
-      <div style={{width:"100%",padding:"16px 20px 8px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <div style={{display:"flex",alignItems:"center",gap:8}}>
+      <div style={{width:"100%",padding:"20px 24px 12px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+        <div style={{display:"flex",alignItems:"center",gap:12}}>
           <span style={{fontSize:28}}>⚽</span>
           <div>
-            <div style={{fontWeight:900,color:"#fff",fontSize:17,lineHeight:1}}>Pênalti Hebraico</div>
-            <div style={{fontWeight:700,color:"rgba(255,255,255,.45)",fontSize:11}}>נָתִיב עִבְרִית</div>
+            <div style={{fontWeight:700,color:"white",fontSize:18}}>Pênaltis Hebraicos</div>
+            <div style={{fontWeight:500,color:"rgba(255,255,255,.6)",fontSize:12}}>נָתִיב עִבְרִית</div>
           </div>
         </div>
-        <div style={{display:"flex",gap:6}}>
+        <div style={{display:"flex",gap:8}}>
           {Array.from({length:TOTAL_KICKS}).map((_,i)=>{
             const h=history[i];
-            return <div key={i} style={{width:26,height:26,borderRadius:"50%",border:`2px solid ${h?(h.goal?"#FF6D00":"rgba(255,255,255,.25)"):"rgba(255,255,255,.2)"}`,background:h?(h.goal?"rgba(255,109,0,.35)":"rgba(255,255,255,.07)"):"transparent",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,transition:"all .3s"}}>{h?(h.goal?"⚽":"✕"):""}</div>;
+            return (
+              <div key={i} style={{
+                width:28,height:28,borderRadius:"50%",
+                border:`2px solid ${h?(h.goal?"#F59E0B":"rgba(255,255,255,.3)"):"rgba(255,255,255,.2)"}`,
+                background:h?(h.goal?"rgba(245,158,11,.2)":"rgba(255,255,255,.1)"):"transparent",
+                display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,
+                transition:"all .3s ease"
+              }}>
+                {h?(h.goal?"⚽":"✕"):""}
+              </div>
+            );
           })}
         </div>
       </div>
 
       {phase!=="intro"&&phase!=="end" && (
-        <div style={{display:"flex",gap:20,marginBottom:6,alignItems:"center"}}>
-          <div style={{textAlign:"center"}}><div style={{fontSize:30,fontWeight:900,color:"#FF6D00",lineHeight:1}}>{goals}</div><div style={{fontSize:10,color:"rgba(255,255,255,.4)",fontWeight:700}}>GOLS</div></div>
-          <div style={{width:1,height:32,background:"rgba(255,255,255,.12)"}}/>
-          <div style={{fontSize:13,fontWeight:700,color:"rgba(255,255,255,.5)"}}>Chute {Math.min(qIdx+1,TOTAL_KICKS)}/{TOTAL_KICKS}</div>
-          <div style={{width:1,height:32,background:"rgba(255,255,255,.12)"}}/>
-          <div style={{textAlign:"center"}}><div style={{fontSize:30,fontWeight:900,color:"rgba(255,255,255,.3)",lineHeight:1}}>{saves}</div><div style={{fontSize:10,color:"rgba(255,255,255,.4)",fontWeight:700}}>DEFESAS</div></div>
+        <div style={{display:"flex",gap:24,marginBottom:12,alignItems:"center"}}>
+          <div style={{textAlign:"center"}}>
+            <div style={{fontSize:32,fontWeight:700,color:"#F59E0B"}}>{goals}</div>
+            <div style={{fontSize:11,color:"rgba(255,255,255,.6)",fontWeight:500}}>GOLS</div>
+          </div>
+          <div style={{width:1,height:36,background:"rgba(255,255,255,.15)"}}/>
+          <div style={{fontSize:14,fontWeight:500,color:"rgba(255,255,255,.7)"}}>Chute {Math.min(qIdx+1,TOTAL_KICKS)}/{TOTAL_KICKS}</div>
+          <div style={{width:1,height:36,background:"rgba(255,255,255,.15)"}}/>
+          <div style={{textAlign:"center"}}>
+            <div style={{fontSize:32,fontWeight:700,color:"rgba(255,255,255,.4)"}}>{saves}</div>
+            <div style={{fontSize:11,color:"rgba(255,255,255,.6)",fontWeight:500}}>DEF.</div>
+          </div>
         </div>
       )}
 
       {/* INTRO */}
       {phase==="intro" && (
-        <div className="fadeUp" style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px 24px 40px",textAlign:"center",width:"100%"}}>
-          <div style={{fontSize:88,marginBottom:12,filter:"drop-shadow(0 12px 28px rgba(0,0,0,.5))"}}>⚽</div>
-          <h1 style={{fontSize:34,fontWeight:900,color:"#fff",lineHeight:1.2,marginBottom:10}}>Disputa de<br/><span style={{color:"#FF6D00"}}>Pênaltis!</span></h1>
-          <p style={{color:"rgba(255,255,255,.6)",fontSize:15,lineHeight:1.7,marginBottom:8}}>Responda em hebraico para ter mais chance de marcar!</p>
-          <div style={{background:"rgba(255,255,255,.07)",border:"1px solid rgba(255,255,255,.1)",borderRadius:20,padding:"18px 20px",marginBottom:32,width:"100%",textAlign:"left"}}>
-            {[["✅","Resposta correta","Goleiro fica mais lento — mais fácil marcar!"],["❌","Resposta errada","Goleiro fica alerta — mais difícil marcar!"],["🎯","Arraste no gol","Mire onde quer chutar, depois confirme!"]].map(([icon,title,desc])=>(
-              <div key={title} style={{display:"flex",gap:12,marginBottom:10,alignItems:"flex-start"}}>
-                <span style={{fontSize:20}}>{icon}</span>
-                <div><div style={{fontWeight:800,color:"#fff",fontSize:13}}>{title}</div><div style={{color:"rgba(255,255,255,.45)",fontSize:12}}>{desc}</div></div>
-              </div>
-            ))}
+        <div className="fadeUp" style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"32px",textAlign:"center",width:"100%"}}>
+          <div style={{fontSize:80,marginBottom:16}}>⚽</div>
+          <h1 style={{fontSize:28,fontWeight:700,color:"white",lineHeight:1.3,marginBottom:12}}>Pênaltis Hebraicos</h1>
+          <p style={{color:"rgba(255,255,255,.8)",fontSize:15,lineHeight:1.6,marginBottom:24}}>Responda corretamente em hebraico para aumentar suas chances de gol</p>
+          <div style={{background:"rgba(255,255,255,.08)",border:"1px solid rgba(255,255,255,.1)",borderRadius:16,padding:"24px",marginBottom:32,width:"100%"}}>
+            <div style={{display:"flex",gap:12,marginBottom:12,alignItems:"flex-start"}}>
+              <span style={{fontSize:20,marginTop:2}}>✅</span>
+              <div><div style={{fontWeight:600,color:"white",fontSize:14}}>Resposta correta</div><div style={{color:"rgba(255,255,255,.6)",fontSize:13}}>Goleiro mais lento</div></div>
+            </div>
+            <div style={{display:"flex",gap:12,marginBottom:12,alignItems:"flex-start"}}>
+              <span style={{fontSize:20,marginTop:2}}>❌</span>
+              <div><div style={{fontWeight:600,color:"white",fontSize:14}}>Resposta errada</div><div style={{color:"rgba(255,255,255,.6)",fontSize:13}}>Goleiro mais rápido</div></div>
+            </div>
+            <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
+              <span style={{fontSize:20,marginTop:2}}>🎯</span>
+              <div><div style={{fontWeight:600,color:"white",fontSize:14}}>Arraste no gol</div><div style={{color:"rgba(255,255,255,.6)",fontSize:13}}>Mire sua posição</div></div>
+            </div>
           </div>
-          <button onClick={()=>setPhase("question")} style={{background:"linear-gradient(135deg,#FF6D00,#FF9100)",color:"#fff",padding:"17px",borderRadius:18,fontWeight:900,fontSize:18,boxShadow:"0 6px 0 #b34a00",width:"100%"}}>⚽ Começar!</button>
+          <button onClick={()=>setPhase("question")} style={{
+            background:"linear-gradient(135deg,#F59E0B,#D97706)",color:"white",
+            padding:"18px 32px",borderRadius:12,fontWeight:700,fontSize:16,
+            boxShadow:"0 6px 20px rgba(245,158,11,.3)",width:"100%"
+          }}>
+            Iniciar
+          </button>
         </div>
       )}
 
       {/* QUESTION */}
       {phase==="question" && (
-        <div className="fadeUp" style={{width:"100%",padding:"8px 20px 0",flex:1}}>
-          <div style={{background:"rgba(255,255,255,.07)",border:"1.5px solid rgba(255,255,255,.12)",borderRadius:22,padding:"20px",marginBottom:16,textAlign:"center"}}>
-            <div style={{fontSize:11,fontWeight:800,color:"rgba(255,255,255,.4)",letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>O que significa?</div>
-            <div style={{fontSize:54,direction:"rtl",fontWeight:900,color:"#fff",lineHeight:1.1}}>{currentQ.heb}</div>
-            <div style={{color:"#FF9100",fontWeight:800,fontSize:19,marginTop:6}}>{currentQ.tr}</div>
+        <div className="fadeUp" style={{width:"100%",padding:"12px 24px 0",flex:1}}>
+          <div style={{
+            background:"rgba(255,255,255,.08)",border:"1px solid rgba(255,255,255,.15)",
+            borderRadius:16,padding:"24px",marginBottom:20,textAlign:"center"
+          }}>
+            <div style={{fontSize:12,fontWeight:600,color:"rgba(255,255,255,.5)",marginBottom:12}}>Qual é a tradução?</div>
+            <div style={{fontSize:48,direction:"rtl",fontWeight:700,color:"white",lineHeight:1.1}}>{currentQ.heb}</div>
+            <div style={{color:"#FCD34D",fontWeight:600,fontSize:18,marginTop:8}}>{currentQ.tr}</div>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
             {currentQ.opts.map(opt=>{
               const isSel=selectedOpt===opt,isCorrect=opt===currentQ.answer;
-              let bg="rgba(255,255,255,.08)",border="rgba(255,255,255,.14)",color="#fff",shadow="none";
-              if(selectedOpt){ if(isCorrect){bg="rgba(255,109,0,.25)";border="#FF6D00";color="#FF9100";shadow="0 0 18px rgba(255,109,0,.4)";}else if(isSel){bg="rgba(244,67,54,.2)";border="#F44336";color="#f87171";}else{bg="rgba(255,255,255,.03)";border="rgba(255,255,255,.06)";color="rgba(255,255,255,.3)";} }
-              return <button key={opt} className={selectedOpt&&isSel&&!isCorrect?"shake":""} onClick={()=>handleAnswer(opt)} style={{padding:"16px 12px",borderRadius:16,fontWeight:800,fontSize:15,border:`2px solid ${border}`,background:bg,color,boxShadow:shadow,transition:"all .2s"}}>{opt}</button>;
+              let bg="rgba(255,255,255,.08)",border="rgba(255,255,255,.2)",color="white";
+              if(selectedOpt){ 
+                if(isCorrect){bg="rgba(245,158,11,.25)";border="#F59E0B";color="#FCD34D";} 
+                else if(isSel){bg="rgba(239,68,68,.2)";border="#EF4444";color:"#FCA5A5";} 
+              }
+              return (
+                <button key={opt} className={selectedOpt&&isSel&&!isCorrect?"shake":""} 
+                  onClick={()=>handleAnswer(opt)} disabled={!!selectedOpt}
+                  style={{
+                    padding:"18px 16px",borderRadius:12,fontWeight:600,fontSize:15,
+                    border:`1px solid ${border}`,background:bg,color,
+                    transition:"all .2s ease", cursor: selectedOpt ? "default" : "pointer"
+                  }}
+                >
+                  {opt}
+                </button>
+              );
             })}
           </div>
           {selectedOpt && (
-            <div style={{marginTop:14,textAlign:"center",padding:"12px 16px",borderRadius:14,background:answeredCorrect?"rgba(255,109,0,.18)":"rgba(244,67,54,.15)",border:`1.5px solid ${answeredCorrect?"#FF6D00":"#F44336"}`}}>
-              <span style={{fontWeight:900,fontSize:15,color:answeredCorrect?"#FF9100":"#f87171"}}>{answeredCorrect?"✅ Correto! Hora de chutar!":`❌ Era "${currentQ.answer}" — mas tente o gol!`}</span>
+            <div style={{
+              marginTop:16,textAlign:"center",padding:"14px 20px",borderRadius:12,
+              background:answeredCorrect?"rgba(245,158,11,.2)":"rgba(239,68,68,.15)",
+              border:`1px solid ${answeredCorrect?"#F59E0B":"#EF4444"}`
+            }}>
+              <span style={{
+                fontWeight:600,fontSize:15,
+                color:answeredCorrect?"#FCD34D":"#FCA5A5"
+              }}>
+                {answeredCorrect?"✅ Correto!":"❌ Era '"+currentQ.answer+"'"}
+              </span>
             </div>
           )}
         </div>
@@ -720,74 +969,104 @@ function PenaltyGame({ onXp }) {
 
       {/* AIM + SHOOT */}
       {(phase==="aim"||phase==="shooting") && (
-        <div className="fadeUp" style={{width:"100%",padding:"6px 14px 0",flex:1,display:"flex",flexDirection:"column"}}>
+        <div className="fadeUp" style={{width:"100%",padding:"12px 20px 0",flex:1,display:"flex",flexDirection:"column"}}>
           {phase==="aim" && (
-            <div style={{textAlign:"center",marginBottom:8}}>
-              <div style={{fontWeight:900,color:"#fff",fontSize:15}}>{answeredCorrect?"✅ Correto! ":"❌ Errou! "}<span style={{color:"rgba(255,255,255,.55)",fontWeight:700,fontSize:13}}>{answeredCorrect?"Goleiro mais lento 💪":"Goleiro esperto 👀"}</span></div>
-              <div style={{color:"rgba(255,255,255,.45)",fontSize:12,marginTop:2}}>{isDragging?"Solte para confirmar":"Arraste no gol para mirar!"}</div>
+            <div style={{textAlign:"center",marginBottom:12}}>
+              <div style={{fontWeight:600,color:"white",fontSize:15}}>
+                {answeredCorrect?"✅ Goleiro lento":"❌ Goleiro alerta"}
+              </div>
+              <div style={{color:"rgba(255,255,255,.6)",fontSize:13}}>
+                {isDragging?"Solte para chutar":"Arraste para mirar"}
+              </div>
             </div>
           )}
 
-          {/* SVG GOAL */}
           <div ref={goalRef} onPointerDown={onPointerDown} onPointerMove={onPointerMove}
             style={{width:"100%",touchAction:"none",cursor:phase==="aim"?"crosshair":"default",userSelect:"none"}}>
-            <svg viewBox={`0 0 ${GW} ${GH+160}`} width="100%" style={{display:"block",filter:"drop-shadow(0 16px 40px rgba(0,0,0,.5))"}}>
+            <svg viewBox={`0 0 ${GW} ${GH+160}`} width="100%" style={{display:"block"}}>
               <defs>
-                <linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#1B5E20"/><stop offset="100%" stopColor="#2E7D32"/></linearGradient>
-                <linearGradient id="pgs" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#388E3C"/><stop offset="100%" stopColor="#43A047"/></linearGradient>
-                <filter id="glow2"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-                <filter id="shad2"><feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#000" floodOpacity="0.4"/></filter>
+                <linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#047857"/>
+                  <stop offset="100%" stopColor="#065F46"/>
+                </linearGradient>
+                <linearGradient id="pgs" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#059669"/>
+                  <stop offset="100%" stopColor="#10B981"/>
+                </linearGradient>
+                <filter id="glow2">
+                  <feGaussianBlur stdDeviation="3" result="blur"/>
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+                <filter id="shad2">
+                  <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="#000" floodOpacity="0.3"/>
+                </filter>
               </defs>
-              {/* Grass */}
+              
               <rect x="0" y={GH} width={GW} height="160" fill="url(#pg)"/>
-              {[0,1,2,3,4].map(i=><rect key={i} x={i*80} y={GH} width="40" height="160" fill="url(#pgs)" opacity=".4"/>)}
-              <circle cx={GW/2} cy={GH+130} r="5" fill="rgba(255,255,255,.6)"/>
-              <path d={`M ${GW/2-60} ${GH} A 70 70 0 0 1 ${GW/2+60} ${GH}`} fill="none" stroke="rgba(255,255,255,.2)" strokeWidth="1.5"/>
-              <rect x={GW*.18} y={GH} width={GW*.64} height="28" fill="none" stroke="rgba(255,255,255,.2)" strokeWidth="1.5"/>
-              <rect x={GW*.30} y={GH} width={GW*.40} height="14" fill="none" stroke="rgba(255,255,255,.15)" strokeWidth="1"/>
-              {/* Net */}
-              <rect x="14" y="8" width={GW-28} height={GH-10} fill="rgba(0,0,0,.18)" rx="2"/>
-              {[0,1,2,3,4,5,6,7,8,9].map(i=><line key={`v${i}`} x1={14+i*(GW-28)/9} y1="8" x2={14+i*(GW-28)/9} y2={GH} stroke="rgba(255,255,255,.12)" strokeWidth="1"/>)}
-              {[0,1,2,3,4,5,6].map(i=><line key={`h${i}`} x1="14" y1={8+i*(GH-8)/6} x2={GW-14} y2={8+i*(GH-8)/6} stroke="rgba(255,255,255,.12)" strokeWidth="1"/>)}
-              {/* Posts */}
-              <rect x="10" y="4" width={GW-20} height="8" fill="#fff" rx="4" filter="url(#shad2)"/>
-              <rect x="10" y="4" width="8" height={GH+2} fill="#fff" rx="4" filter="url(#shad2)"/>
-              <rect x={GW-18} y="4" width="8" height={GH+2} fill="#fff" rx="4" filter="url(#shad2)"/>
-              {/* Goal flash */}
-              {shotResult==="goal" && <rect x="14" y="8" width={GW-28} height={GH-10} fill="rgba(255,109,0,.22)" rx="2"><animate attributeName="opacity" values="0;1;0.8;1;0.6;1" dur="0.6s" fill="freeze"/></rect>}
+              {[0,1,2,3,4].map(i=><rect key={i} x={i*80} y={GH} width="40" height="160" fill="url(#pgs)" opacity=".3"/>)}
+              <circle cx={GW/2} cy={GH+130} r="4" fill="rgba(255,255,255,.5)"/>
+              
+              <rect x={GW*.18} y={GH} width={GW*.64} height="24" fill="none" stroke="rgba(255,255,255,.15)" strokeWidth="1.5"/>
+              <rect x={GW*.30} y={GH} width={GW*.40} height="12" fill="none" stroke="rgba(255,255,255,.1)" strokeWidth="1"/>
+              
+              <rect x="12" y="6" width={GW-24} height={GH-8} fill="rgba(0,0,0,.15)" rx="2"/>
+              {[0,1,2,3,4,5,6,7,8,9].map(i=>(
+                <line key={`v${i}`} x1={12+i*(GW-24)/9} y1="6" x2={12+i*(GW-24)/9} y2={GH} stroke="rgba(255,255,255,.1)" strokeWidth="1"/>
+              ))}
+              {[0,1,2,3,4,5,6].map(i=>(
+                <line key={`h${i}`} x1="12" y1={6+i*(GH-6)/6} x2={GW-12} y2={6+i*(GH-6)/6} stroke="rgba(255,255,255,.1)" strokeWidth="1"/>
+              ))}
+              
+              <rect x="8" y="2" width={GW-16} height="6" fill="white" rx="3" filter="url(#shad2)"/>
+              <rect x="8" y="2" width="6" height={GH} fill="white" rx="3" filter="url(#shad2)"/>
+              <rect x={GW-14} y="2" width="6" height={GH} fill="white" rx="3" filter="url(#shad2)"/>
+              
+              {shotResult==="goal" && (
+                <rect x="12" y="6" width={GW-24} height={GH-8} fill="rgba(245,158,11,.2)" rx="2">
+                  <animate attributeName="opacity" values="0;1;0.7;1;0" dur="0.8s" fill="freeze"/>
+                </rect>
+              )}
 
-              {/* KEEPER — bigger */}
               <KeeperSVG x={keeperX} gH={GH} anim={keeperAnim} shooting={phase==="shooting"}/>
-
-              {/* Aim crosshair */}
+              
               {phase==="aim" && (
                 <g>
-                  <circle cx={aimPct.x*GW} cy={aimPct.y*GH} r="22" fill="rgba(0,0,0,.25)"/>
-                  <circle cx={aimPct.x*GW} cy={aimPct.y*GH} r="20" fill="none" stroke="#FF6D00" strokeWidth="2.5" strokeDasharray="6 4" opacity=".9"/>
-                  <circle cx={aimPct.x*GW} cy={aimPct.y*GH} r="6" fill="#FF6D00" filter="url(#glow2)"/>
-                  <line x1={aimPct.x*GW-30} y1={aimPct.y*GH} x2={aimPct.x*GW+30} y2={aimPct.y*GH} stroke="#FF6D00" strokeWidth="1.5" opacity=".6"/>
-                  <line x1={aimPct.x*GW} y1={aimPct.y*GH-30} x2={aimPct.x*GW} y2={aimPct.y*GH+30} stroke="#FF6D00" strokeWidth="1.5" opacity=".6"/>
+                  <circle cx={aimPct.x*GW} cy={aimPct.y*GH} r="18" fill="rgba(0,0,0,.2)"/>
+                  <circle cx={aimPct.x*GW} cy={aimPct.y*GH} r="16" fill="none" stroke="#F59E0B" strokeWidth="2" strokeDasharray="5 5" opacity=".9"/>
+                  <circle cx={aimPct.x*GW} cy={aimPct.y*GH} r="5" fill="#F59E0B" filter="url(#glow2)"/>
                 </g>
               )}
 
-              {/* Ball */}
               <PenaltyBall x={ballSvg.x} y={ballSvg.y} stage={ballStage} shotResult={shotResult}/>
-
-              {/* Result banner */}
+              
               {shotResult && (
                 <g>
-                  <rect x="60" y={GH/2-38} width={GW-120} height="76" rx="16" fill={shotResult==="goal"?"rgba(255,109,0,.92)":"rgba(13,43,107,.9)"} filter="url(#shad2)"/>
-                  <text x={GW/2} y={GH/2+6} textAnchor="middle" fill="#fff" fontSize="26" fontWeight="900" fontFamily="Nunito,sans-serif">{shotResult==="goal"?"⚽ GOL!":"🧤 Defendido!"}</text>
-                  {shotResult==="goal" && <text x={GW/2} y={GH/2+30} textAnchor="middle" fill="rgba(255,255,255,.75)" fontSize="14" fontFamily="Nunito,sans-serif" fontWeight="700">שַׁעַר! (Sha'ar!)</text>}
+                  <rect x="50" y={GH/2-35} width={GW-100} height="70" rx="12" 
+                    fill={shotResult==="goal"?"rgba(245,158,11,.95)":"rgba(30,58,138,.95)"} 
+                    filter="url(#shad2)"/>
+                  <text x={GW/2} y={GH/2+4} textAnchor="middle" fill="white" fontSize="24" fontWeight="700" fontFamily="Inter,sans-serif">
+                    {shotResult==="goal"?"⚽ GOL!":"🧤 DEFESA!"}
+                  </text>
+                  {shotResult==="goal" && (
+                    <text x={GW/2} y={GH/2+26} textAnchor="middle" fill="rgba(255,255,255,.8)" fontSize="13" fontFamily="Inter,sans-serif" fontWeight="600">
+                      שַׁעַר!
+                    </text>
+                  )}
                 </g>
               )}
             </svg>
           </div>
 
           {phase==="aim" && (
-            <div style={{padding:"10px 0 20px"}}>
-              <button onClick={shoot} style={{width:"100%",background:"linear-gradient(135deg,#FF6D00,#FF9100)",color:"#fff",padding:"17px",borderRadius:18,fontWeight:900,fontSize:18,boxShadow:"0 6px 0 #b34a00,0 12px 30px rgba(255,109,0,.3)",display:"flex",alignItems:"center",justifyContent:"center",gap:10}}>
-                <span style={{fontSize:22}}>⚽</span> CHUTAR!
+            <div style={{padding:"16px 0 24px"}}>
+              <button onClick={shoot} style={{
+                width:"100%",background:"linear-gradient(135deg,#F59E0B,#D97706)",color:"white",
+                padding:"18px",borderRadius:12,fontWeight:700,fontSize:16,
+                boxShadow:"0 6px 20px rgba(245,158,11,.3)",
+                display:"flex",alignItems:"center",justifyContent:"center",gap:8
+              }}>
+                <span style={{fontSize:24}}>⚽</span>
+                Chutar
               </button>
             </div>
           )}
@@ -796,122 +1075,121 @@ function PenaltyGame({ onXp }) {
 
       {/* END */}
       {phase==="end" && (
-        <div className="fadeUp" style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px",textAlign:"center",width:"100%"}}>
+        <div className="fadeUp" style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"32px",textAlign:"center",width:"100%"}}>
           {goals>=3 && <PenaltyConfetti/>}
-          <div style={{fontSize:86,marginBottom:10}}>{goals>=4?"🏆":goals>=3?"⭐":goals>=2?"😤":"😓"}</div>
-          <h2 style={{fontSize:30,fontWeight:900,color:"#fff",marginBottom:4}}>{goals>=4?"Craque!":goals>=3?"Muito bem!":goals>=2?"Pode melhorar!":"Continue estudando!"}</h2>
-          <div style={{background:"rgba(255,255,255,.07)",border:"1.5px solid rgba(255,255,255,.12)",borderRadius:22,padding:"20px 24px",marginBottom:24,width:"100%"}}>
-            <div style={{fontSize:11,fontWeight:800,color:"rgba(255,255,255,.4)",textTransform:"uppercase",letterSpacing:2,marginBottom:14}}>Placar Final</div>
-            <div style={{display:"flex",justifyContent:"center",gap:32,marginBottom:18}}>
-              <div><div style={{fontSize:52,fontWeight:900,color:"#FF6D00",lineHeight:1}}>{goals}</div><div style={{fontSize:11,color:"rgba(255,255,255,.4)",fontWeight:700}}>GOLS</div></div>
-              <div style={{fontSize:36,color:"rgba(255,255,255,.15)",paddingTop:8}}>—</div>
-              <div><div style={{fontSize:52,fontWeight:900,color:"rgba(255,255,255,.3)",lineHeight:1}}>{saves}</div><div style={{fontSize:11,color:"rgba(255,255,255,.4)",fontWeight:700}}>DEFESAS</div></div>
+          <div style={{fontSize:72,marginBottom:16}}>{goals>=4?"🏆":goals>=3?"⭐":goals>=2?"⚽":"📖"}</div>
+          <h2 style={{fontSize:26,fontWeight:700,color:"white",marginBottom:8}}>
+            {goals>=4?"Excelente!":goals>=3?"Muito bom!":goals>=2?"Bom trabalho":"Continue praticando"}
+          </h2>
+          <div style={{
+            background:"rgba(255,255,255,.08)",border:"1px solid rgba(255,255,255,.15)",
+            borderRadius:16,padding:"24px 28px",marginBottom:28,width:"100%"
+          }}>
+            <div style={{fontSize:12,fontWeight:600,color:"rgba(255,255,255,.5)",marginBottom:16,textTransform:"uppercase",letterSpacing:"0.05em"}}>
+              Resultado Final
             </div>
-            <div style={{display:"flex",justifyContent:"center",gap:8}}>
-              {history.map((h,i)=><div key={i} style={{width:38,height:38,borderRadius:10,background:h.goal?"rgba(255,109,0,.3)":"rgba(255,255,255,.07)",border:`2px solid ${h.goal?"#FF6D00":"rgba(255,255,255,.15)"}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:19}}>{h.goal?"⚽":"✕"}</div>)}
+            <div style={{display:"flex",justifyContent:"center",gap:32,marginBottom:20}}>
+              <div><div style={{fontSize:48,fontWeight:700,color:"#F59E0B"}}>{goals}</div><div style={{fontSize:12,color:"rgba(255,255,255,.6)"}}>GOLS</div></div>
+              <div style={{fontSize:36,color:"rgba(255,255,255,.2)",paddingTop:8}}>-</div>
+              <div><div style={{fontSize:48,fontWeight:700,color:"rgba(255,255,255,.4)"}}>{saves}</div><div style={{fontSize:12,color:"rgba(255,255,255,.6)"}}>DEFESAS</div></div>
+            </div>
+            <div style={{display:"flex",justifyContent:"center",gap:10}}>
+              {history.map((h,i)=>(
+                <div key={i} style={{
+                  width:40,height:40,borderRadius:10,
+                  background:h.goal?"rgba(245,158,11,.25)":"rgba(255,255,255,.1)",
+                  border:`1px solid ${h.goal?"#F59E0B":"rgba(255,255,255,.2)"}`,
+                  display:"flex",alignItems:"center",justifyContent:"center",fontSize:20
+                }}>
+                  {h.goal?"⚽":"✕"}
+                </div>
+              ))}
             </div>
           </div>
-          <button onClick={restart} style={{width:"100%",background:"linear-gradient(135deg,#FF6D00,#FF9100)",color:"#fff",padding:"17px",borderRadius:18,fontWeight:900,fontSize:17,boxShadow:"0 6px 0 #b34a00"}}>⚽ Jogar de Novo</button>
+          <button onClick={restart} style={{
+            width:"100%",background:"linear-gradient(135deg,#F59E0B,#D97706)",color:"white",
+            padding:"18px",borderRadius:12,fontWeight:700,fontSize:16,
+            boxShadow:"0 6px 20px rgba(245,158,11,.3)"
+          }}>
+            Jogar Novamente
+          </button>
         </div>
       )}
     </div>
   );
 }
 
-// ── KEEPER SVG (grande) ───────────────────────────────────────────────────────
 function KeeperSVG({ x, gH, anim, shooting }) {
-  const tiltDeg = (anim==="diving"||anim==="saved") ? (x<200 ? -28 : 28) : 0;
-  // Scale up: was translate(-20,-56), now we scale 1.7x around feet pivot
-  const S = 1.75;
+  const tiltDeg = (anim==="diving"||anim==="saved") ? (x<200 ? -25 : 25) : 0;
+  const S = 1.6;
   return (
-    <g transform={`translate(${x}, ${gH - 10})`}
-      style={{ transition: shooting ? "transform .55s cubic-bezier(.25,.46,.45,.94)" : "none" }}>
-      <g transform={`rotate(${tiltDeg})`}
-        style={{ transition: shooting ? "transform .5s cubic-bezier(.34,1.56,.64,1)" : "none" }}>
-        <g transform={`scale(${S}) translate(-20, -72)`}>
-          {/* Shadow */}
-          <ellipse cx="20" cy="72" rx="18" ry="5" fill="rgba(0,0,0,.3)"/>
-          {/* Legs */}
-          <rect x="11" y="52" width="8" height="20" fill="#FF6D00" rx="3"/>
-          <rect x="21" y="52" width="8" height="20" fill="#FF6D00" rx="3"/>
-          {/* Boots */}
-          <rect x="9"  y="68" width="12" height="7" fill="#111" rx="2.5"/>
-          <rect x="19" y="68" width="12" height="7" fill="#111" rx="2.5"/>
-          {/* Body */}
-          <rect x="8" y="24" width="24" height="30" fill="#1565C0" rx="7"/>
-          {/* Jersey stripes */}
-          <rect x="8" y="30" width="24" height="4" fill="rgba(255,255,255,.18)" rx="2"/>
-          <rect x="8" y="40" width="24" height="4" fill="rgba(255,255,255,.18)" rx="2"/>
-          {/* Jersey number */}
-          <text x="20" y="42" textAnchor="middle" fill="rgba(255,255,255,.8)" fontSize="11" fontWeight="900" fontFamily="Nunito">1</text>
-          {/* Arms */}
-          <rect x="-2" y="26" width="11" height="6" fill="#1565C0" rx="3"/>
-          <rect x="31" y="26" width="11" height="6" fill="#1565C0" rx="3"/>
-          {/* Gloves */}
-          <circle cx="0"  cy="29" r="7" fill="#FFB300"/>
-          <circle cx="40" cy="29" r="7" fill="#FFB300"/>
-          <circle cx="0"  cy="29" r="3" fill="#cc8800" opacity=".5"/>
-          <circle cx="40" cy="29" r="3" fill="#cc8800" opacity=".5"/>
-          {/* Neck */}
-          <rect x="17" y="16" width="6" height="10" fill="#FFCC80" rx="2"/>
-          {/* Head */}
-          <circle cx="20" cy="12" r="14" fill="#FFCC80"/>
-          {/* Ears */}
-          <ellipse cx="6"  cy="12" rx="3.5" ry="4.5" fill="#FFCC80"/>
-          <ellipse cx="34" cy="12" rx="3.5" ry="4.5" fill="#FFCC80"/>
-          {/* Eyes */}
-          <ellipse cx="14" cy="11" rx="3" ry="3.5" fill="#fff"/>
-          <ellipse cx="26" cy="11" rx="3" ry="3.5" fill="#fff"/>
-          <circle cx="14" cy="12" r="2" fill="#333"/>
-          <circle cx="26" cy="12" r="2" fill="#333"/>
-          {/* Eyebrows */}
-          <path d="M 10 7 Q 14 5 18 7" stroke="#555" strokeWidth="1.5" fill="none"/>
-          <path d="M 22 7 Q 26 5 30 7" stroke="#555" strokeWidth="1.5" fill="none"/>
-          {/* Mouth */}
+    <g transform={`translate(${x}, ${gH - 8})`}>
+      <g transform={`rotate(${tiltDeg})`}>
+        <g transform={`scale(${S}) translate(-18, -68)`}>
+          <ellipse cx="20" cy="68" rx="16" ry="4" fill="rgba(0,0,0,.25)"/>
+          
+          <rect x="10" y="48" width="8" height="20" fill="#F59E0B" rx="3"/>
+          <rect x="22" y="48" width="8" height="20" fill="#F59E0B" rx="3"/>
+          
+          <rect x="7" y="64" width="12" height="6" fill="#111" rx="2"/>
+          <rect x="21" y="64" width="12" height="6" fill="#111" rx="2"/>
+          
+          <rect x="6" y="20" width="28" height="32" fill="#1E40AF" rx="6"/>
+          <rect x="6" y="28" width="28" height="4" fill="rgba(255,255,255,.2)" rx="2"/>
+          
+          <text x="20" y="40" textAnchor="middle" fill="white" fontSize="10" fontWeight="700" fontFamily="Inter">1</text>
+          
+          <rect x="-4" y="24" width="12" height="6" fill="#1E40AF" rx="3"/>
+          <rect x="32" y="24" width="12" height="6" fill="#1E40AF" rx="3"/>
+          
+          <circle cx="1" cy="27" r="6" fill="#FCD34D"/>
+          <circle cx="39" cy="27" r="6" fill="#FCD34D"/>
+          
+          <rect x="16" y="14" width="8" height="10" fill="#FCD34D" rx="2"/>
+          
+          <circle cx="20" cy="10" r="13" fill="#FCD34D"/>
+          <ellipse cx="5" cy="10" rx="3" ry="4" fill="#FCD34D"/>
+          <ellipse cx="35" cy="10" rx="3" ry="4" fill="#FCD34D"/>
+          
+          <ellipse cx="13" cy="9" rx="2.5" ry="3" fill="#fff"/>
+          <ellipse cx="27" cy="9" rx="2.5" ry="3" fill="#fff"/>
+          <circle cx="13" cy="10" r="1.5" fill="#333"/>
+          <circle cx="27" cy="10" r="1.5" fill="#333"/>
+          
+          <path d="M 9 6 Q 13 4 17 6" stroke="#444" strokeWidth="1.2" fill="none"/>
+          <path d="M 23 6 Q 27 4 31 6" stroke="#444" strokeWidth="1.2" fill="none"/>
+          
           {anim==="saved"
-            ? <path d="M 13 19 Q 20 16 27 19" stroke="#555" strokeWidth="1.5" fill="none"/>
-            : <path d="M 13 18 Q 20 22 27 18" stroke="#555" strokeWidth="1.5" fill="none"/>
+            ? <path d="M 12 17 Q 20 14 28 17" stroke="#444" strokeWidth="1.2" fill="none"/>
+            : <path d="M 12 16 Q 20 20 28 16" stroke="#444" strokeWidth="1.2" fill="none"/>
           }
-          {/* Cap brim */}
-          <path d="M 7 8 Q 20 0 33 8 L 34 6 Q 20 -2 6 6 Z" fill="#FF6D00"/>
-          {/* Cap top */}
-          <path d="M 8 8 Q 20 2 32 8 Q 20 4 8 8 Z" fill="#cc5500" opacity=".5"/>
+          
+          <path d="M 6 6 Q 20 0 34 6 L 35 4 Q 20 -1 5 4 Z" fill="#F59E0B"/>
+          <path d="M 7 6 Q 20 1 33 6 Q 20 3 7 6 Z" fill="#D97706" opacity=".6"/>
         </g>
       </g>
     </g>
   );
 }
 
-// ── BALL SVG ──────────────────────────────────────────────────────────────────
 function PenaltyBall({ x, y, stage, shotResult }) {
-  const sc = stage==="flying" ? 0.75 : 1;
+  const sc = stage==="flying" ? 0.8 : 1;
   return (
-    <g transform={`translate(${x},${y})`} style={{ transition:stage==="flying"?"transform .7s cubic-bezier(.25,.46,.45,.94)":"none" }}>
-      <g transform={`scale(${sc})`} style={{ transition:"transform .3s ease", transformOrigin:"center" }}>
-        <ellipse cx="0" cy="18" rx={11*sc} ry="4" fill="rgba(0,0,0,.3)"/>
-        <circle cx="0" cy="0" r="14" fill="#fff" stroke="#ddd" strokeWidth="1"/>
-        <circle cx="0"  cy="0"  r="5"   fill="#222"/>
-        <circle cx="-8" cy="-6" r="4.5" fill="#222"/>
-        <circle cx="8"  cy="-6" r="4.5" fill="#222"/>
-        <circle cx="-9" cy="5"  r="4.5" fill="#222"/>
-        <circle cx="9"  cy="5"  r="4.5" fill="#222"/>
+    <g transform={`translate(${x},${y})`}>
+      <g transform={`scale(${sc})`}>
+        <ellipse cx="0" cy="16" rx="10" ry="3" fill="rgba(0,0,0,.25)"/>
+        <circle cx="0" cy="0" r="13" fill="#fff" stroke="#eee" strokeWidth="1"/>
+        <circle cx="0" cy="0" r="4.5" fill="#333"/>
+        <circle cx="-7" cy="-5" r="4" fill="#333"/>
+        <circle cx="7" cy="-5" r="4" fill="#333"/>
+        <circle cx="-8" cy="4" r="4" fill="#333"/>
+        <circle cx="8" cy="4" r="4" fill="#333"/>
         {shotResult==="goal" && (
-          <circle cx="0" cy="0" r="16" fill="none" stroke="#FF6D00" strokeWidth="3" opacity="0.7">
-            <animate attributeName="r" values="14;22;14" dur="0.5s" repeatCount="2"/>
-            <animate attributeName="opacity" values="0.8;0;0.8" dur="0.5s" repeatCount="2"/>
+          <circle cx="0" cy="0" r="15" fill="none" stroke="#F59E0B" strokeWidth="2.5" opacity=".8">
+            <animate attributeName="r" values="13;20;13" dur="0.4s" repeatCount="3"/>
           </circle>
         )}
       </g>
     </g>
-  );
-}
-
-// ── CONFETTI ──────────────────────────────────────────────────────────────────
-function PenaltyConfetti() {
-  const pieces = Array.from({length:22},(_,i)=>({ id:i, x:Math.random()*100, delay:Math.random(), color:["#FF6D00","#FF9100","#fff","#FFB300","#1CB0F6","#FF4B4B"][Math.floor(Math.random()*6)], size:7+Math.random()*9, dur:1.4+Math.random()*.8 }));
-  return (
-    <div style={{position:"fixed",top:0,left:0,right:0,height:"100vh",pointerEvents:"none",zIndex:999,overflow:"hidden"}}>
-      {pieces.map(p=><div key={p.id} style={{position:"absolute",left:`${p.x}%`,top:-14,width:p.size,height:p.size,borderRadius:Math.random()>.5?"50%":"2px",background:p.color,animation:`confetti ${p.dur}s ${p.delay}s ease forwards`}}/>)}
-    </div>
   );
 }
