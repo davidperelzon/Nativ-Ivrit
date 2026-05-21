@@ -82,10 +82,10 @@ const LEVELS = [
 ];
 
 const CHAT_SEED = [
-  { id:1, user:"Yael",   avatar:"👩", msg:"Shalom! Alguém quer praticar?",           time:"09:12", mine:false },
-  { id:2, user:"Carlos", avatar:"👨", msg:"Shalom! Nível Bet. Posso tentar.",        time:"09:14", mine:false },
-  { id:3, user:"Ana",    avatar:"👩", msg:"תּוֹדָה pela explicação de ontem.",        time:"09:20", mine:false },
-  { id:4, user:"Yael",   avatar:"👩", msg:"בְּבַקָּשָׁה. Vamos continuar.",          time:"09:22", mine:false },
+  { id:1, user:"Lucas",   avatar:"👩", msg:"Shalom! Alguém quer praticar?",           time:"09:12", mine:false },
+  { id:2, user:"David", avatar:"👨", msg:"Shalom! Nível Bet. Posso tentar.",        time:"09:14", mine:false },
+  { id:3, user:"Ana Clara",    avatar:"👩", msg:"תּוֹדָה pela explicação de ontem.",        time:"09:20", mine:false },
+  { id:4, user:"Sofia Aranha",   avatar:"👩", msg:"בְּבַקָּשָׁה. Vamos continuar.",          time:"09:22", mine:false },
 ];
 
 const GW2 = 400; const GH2 = 220; const TOTAL_KICKS = 5;
@@ -186,7 +186,7 @@ export default function NativIvrit() {
     setFcFlip(false);
   }, [fcIdx]);
 
-  // Match
+  // Partida
   const [matchWords]  = useState(() => shuffle(WORDS).slice(0,5));
   const [leftItems]   = useState(() => shuffle(matchWords.map(w => ({ id:w.heb, label:w.heb, sub:w.tr, type:"heb" }))));
   const [rightItems]  = useState(() => shuffle(matchWords.map(w => ({ id:w.heb, label:w.pt, emoji:w.emoji, type:"pt" }))));
@@ -466,7 +466,7 @@ function HomeTab({ xp, xpPct, goGame, setTab }) {
   );
 }
 
-// ── LEARN TAB ─────────────────────────────────────────────────────────────────
+// ──TAB de aprendizado ─────────────────────────────────────────────────────────────────
 function LearnTab({ levels, xp, xpPct, goGame, words }) {
   const [playingIdx, setPlayingIdx] = useState(null);
 
@@ -1352,6 +1352,7 @@ function PenaltyGame({ onXp }) {
                   <circle cx={aimPct.x*GW2} cy={aimPct.y*GH2} r="5" fill="#F59E0B" filter="url(#glow2)"/>
                 </g>
               )}
+
               <PenaltyBall x={ballSvg.x} y={ballSvg.y} stage={ballStage} shotResult={shotResult}/>
               {shotResult && (
                 <g>
@@ -1441,7 +1442,7 @@ function KeeperSVG({ x, gH, anim }) {
   );
 }
 
-// ── PENALTY BALL ──────────────────────────────────────────────────────────────
+// ── Bola do penalty ──────────────────────────────────────────────────────────────
 function PenaltyBall({ x, y, stage, shotResult }) {
   const sc = stage==="flying" ? 0.8 : 1;
   return (
@@ -1463,3 +1464,10 @@ function PenaltyBall({ x, y, stage, shotResult }) {
     </g>
   );
 }
+
+
+// 1) será que para criar como se fosse um classroom dentro do nativ ivrit? sistema de atividades baseado no nível da turma e do aluno (caso implementação em sala de aula)
+
+// 2) implementar o sistema de áudio para ler uma palavra, não somente no modo de escuta porem no modo padrão também
+
+// 3) sistema de alfabeto em hebraico disponibilizado na plataforma, como no modo de escuta
