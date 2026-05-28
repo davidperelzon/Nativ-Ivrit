@@ -1471,3 +1471,7 @@ function PenaltyBall({ x, y, stage, shotResult }) {
 // 2) implementar o sistema de áudio para ler uma palavra, não somente no modo de escuta porem no modo padrão também
 
 // 3) sistema de alfabeto em hebraico disponibilizado na plataforma, como no modo de escuta
+
+//4)criar um db para guardar as palavras em hebraico e minimizar linhas de código (firebase,SQLite e PgAdmin4)
+
+//5) criar um forms para saber o interesse sobre a  cultura e aproximação judaica
