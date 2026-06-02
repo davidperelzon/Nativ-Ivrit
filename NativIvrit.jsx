@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback, memo } from "react";
 
-// ── PALETTE ───────────────────────────────────────────────────────────────────
-const C = {
+// ── CORES ───────────────────────────────────────────────────────────────────
+const CORES = {
   blue:"#1E3A8A", blueMid:"#1D4ED8", blueLt:"#EEF2FF",
   orange:"#B45309", orangeMid:"#D97706", orangeLt:"#FEF3C7",
   navy:"#111827", white:"#FFFFFF", bg:"#F8FAFC",
@@ -11,8 +11,8 @@ const C = {
   green:"#059669", greenLt:"#F0FDF4",
 };
 
-// ── DATA ──────────────────────────────────────────────────────────────────────
-const WORDS = [
+// ── PALAVRAS ──────────────────────────────────────────────────────────────────────
+const PALAVRAS = [
   { heb:"שָׁלוֹם",      tr:"Shalom",    pt:"Olá / Paz",   emoji:"👋" },
   { heb:"תּוֹדָה",       tr:"Todá",      pt:"Obrigado/a",  emoji:"🙏" },
   { heb:"בֹּקֶר טוֹב",  tr:"Boker Tov", pt:"Bom dia",     emoji:"☀️" },
@@ -31,7 +31,7 @@ const WORDS = [
   { heb:"לְהִתְרָאוֹת", tr:"Lehitraot",  pt:"Até logo",    emoji:"👋" },
 ];
 
-const FOOTBALL = [
+const FUTEBOL = [
   { heb:"שַׁעַר",       tr:"Sha'ar",    pt:"Gol",      emoji:"⚽" },
   { heb:"כַּדּוּר",     tr:"Kadúr",     pt:"Bola",     emoji:"🟡" },
   { heb:"שָׂחְקָן",     tr:"Sakhkán",   pt:"Jogador",  emoji:"🧑" },
@@ -81,7 +81,7 @@ const LEVELS = [
     lessons:[{ id:"4-1",title:"Verbos",icon:"🔤",xp:30 },{ id:"4-2",title:"Esportes",icon:"⚽",xp:30 },{ id:"4-3",title:"Cultura",icon:"🇮🇱",xp:35 }]},
 ];
 
-const CHAT_SEED = [
+const MENSAGENS_INICIAIS = [
   { id:1, user:"Lucas",   avatar:"👩", msg:"Shalom! Alguém quer praticar?",           time:"09:12", mine:false },
   { id:2, user:"David", avatar:"👨", msg:"Shalom! Nível Bet. Posso tentar.",        time:"09:14", mine:false },
   { id:3, user:"Ana Clara",    avatar:"👩", msg:"תּוֹדָה pela explicação de ontem.",        time:"09:20", mine:false },
@@ -89,13 +89,13 @@ const CHAT_SEED = [
 ];
 
 const GW2 = 400; const GH2 = 220; const TOTAL_KICKS = 5;
-const shuffle = (a) => [...a].sort(() => Math.random() - 0.5);
+const embaralhar = (a) => [...a].sort(() => Math.random() - 0.5);
 function buildFQOpts(idx) {
-  const c = FOOTBALL[idx];
-  return shuffle([c, ...shuffle(FOOTBALL.filter((_,i)=>i!==idx)).slice(0,3)]);
+  const c = FUTEBOL[idx];
+  return embaralhar([c, ...embaralhar(FUTEBOL.filter((_,i)=>i!==idx)).slice(0,3)]);
 }
 
-// ── TTS ENGINE ────────────────────────────────────────────────────────────────
+// ── ENGENHARIA DA FALA ────────────────────────────────────────────────────────────────
 function speakHebrew(text, onEnd) {
   if (!window.speechSynthesis) { if (onEnd) onEnd(); return; }
   window.speechSynthesis.cancel();
@@ -130,9 +130,9 @@ function preloadVoices() {
 // ANTES: era definido dentro de NativIvrit() → recriado a cada render,
 //        quebrando a identidade do componente e causando remontagem desnecessária.
 // AGORA: componente puro de nível superior.
-const AudioBtn = memo(function AudioBtn({ text, size = 14, label = "Ouvir" }) {
+const BotaoAudio = function BotaoAudio({ text, size = 14, label = "Ouvir" }) {
   const [playing, setPlaying] = useState(false);
-  const handlePlay = useCallback((e) => {
+  const handlePlay = ((e) => {
     e.stopPropagation();
     if (playing) { window.speechSynthesis.cancel(); setPlaying(false); return; }
     setPlaying(true);
@@ -155,23 +155,23 @@ const AudioBtn = memo(function AudioBtn({ text, size = 14, label = "Ouvir" }) {
       {label && <span>{playing ? "Parando..." : label}</span>}
     </button>
   );
-});
+};
 
 // ── PILL ──────────────────────────────────────────────────────────────────────
-const Pill = memo(function Pill({ icon, val, color, bg }) {
+const Pill = function Pill({ icon, val, color, bg }) {
   return (
     <div style={{ display:"flex", alignItems:"center", gap:6, background:bg, borderRadius:999, padding:"6px 12px", border:`1px solid ${color}20`, fontSize:13, fontWeight:600 }}>
       <span style={{fontSize:14}}>{icon}</span>
       <span style={{color}}>{val}</span>
     </div>
   );
-});
+};
 
 // ── COMPONENTE PRINCIPAL ──────────────────────────────────────────────────────
 export default function NativIvrit() {
-  const [tab, setTab]       = useState("home");
+  const [abaAtual, setAbaAtual]       = useState("home");
   const [screen, setScreen] = useState(null);
-  const [xp, setXp]         = useState(120);
+  const [experiencia, setExperiencia]         = useState(120);
   const [streak]            = useState(5);
 
   useEffect(() => { preloadVoices(); }, []);
@@ -180,21 +180,21 @@ export default function NativIvrit() {
   const [fcIdx, setFcIdx]     = useState(0);
   const [fcFlip, setFcFlip]   = useState(false);
   const [fcKnown, setFcKnown] = useState(new Set());
-  const fcNext = useCallback((knew) => {
+  const fcNext = ((knew) => {
     if (knew) { setFcKnown(s => new Set(s).add(fcIdx)); setXp(x => x+3); }
-    setFcIdx(i => (i+1) % WORDS.length);
+    setFcIdx(i => (i+1) % PALAVRAS.length);
     setFcFlip(false);
   }, [fcIdx]);
 
   // Partida
-  const [matchWords]  = useState(() => shuffle(WORDS).slice(0,5));
-  const [leftItems]   = useState(() => shuffle(matchWords.map(w => ({ id:w.heb, label:w.heb, sub:w.tr, type:"heb" }))));
-  const [rightItems]  = useState(() => shuffle(matchWords.map(w => ({ id:w.heb, label:w.pt, emoji:w.emoji, type:"pt" }))));
+  const [matchWords]  = useState(() => embaralhar(PALAVRAS).slice(0,5));
+  const [leftItems]   = useState(() => embaralhar(matchWords.map(w => ({ id:w.heb, label:w.heb, sub:w.tr, type:"heb" }))));
+  const [rightItems]  = useState(() => embaralhar(matchWords.map(w => ({ id:w.heb, label:w.pt, emoji:w.emoji, type:"pt" }))));
   const [mSel, setMSel]     = useState(null);
   const [mDone, setMDone]   = useState({});
   const [mWrong, setMWrong] = useState(null);
   const [mScore, setMScore] = useState(0);
-  const handleMatch = useCallback((item) => {
+  const handleMatch = ((item) => {
     if (mDone[item.id]) return;
     if (!mSel) { setMSel(item); return; }
     if (mSel.id === item.id && mSel.type !== item.type) {
@@ -218,22 +218,22 @@ export default function NativIvrit() {
   const [fqScore,setFqScore] = useState(0);
   const [fqDone, setFqDone]  = useState(false);
   const [fqCombo,setFqCombo] = useState(0);
-  const handleFQ = useCallback((opt) => {
+  const handleFQ = ((opt) => {
     if (fqSel) return;
     setFqSel(opt.pt);
-    if (opt.pt === FOOTBALL[fqIdx].pt) {
+    if (opt.pt === FUTEBOL[fqIdx].pt) {
       setFqScore(s => s+1); setFqCombo(c => c+1); setXp(x => x+5);
-      speakHebrew(FOOTBALL[fqIdx].heb);
+      speakHebrew(FUTEBOL[fqIdx].heb);
     } else { setFqCombo(0); }
   }, [fqSel, fqIdx]);
-  const nextFQ = useCallback(() => {
-    if (fqIdx < FOOTBALL.length-1) {
+  const nextFQ = (() => {
+    if (fqIdx < FUTEBOL.length-1) {
       const ni = fqIdx+1;
       setFqIdx(ni); setFqOpts(buildFQOpts(ni)); setFqSel(null);
     } else { setFqDone(true); }
   }, [fqIdx]);
 
-  // Riddle
+  // PERGUNTAS
   const RIDDLES = [
     { pre:"Como se diz", word:"Olá / Paz",  opts:["שָׁלוֹם (Shalom)","תּוֹדָה (Todá)","כֵּן (Ken)","לֹא (Lo)"],                    answer:"שָׁלוֹם (Shalom)", heb:"שָׁלוֹם", emoji:"👋" },
     { pre:"Como se diz", word:"Obrigado/a", opts:["בְּבַקָּשָׁה (Bevakashá)","מַיִם (Máyim)","תּוֹדָה (Todá)","שָׁלוֹם (Shalom)"],answer:"תּוֹדָה (Todá)",    heb:"תּוֹדָה", emoji:"🙏" },
@@ -246,7 +246,7 @@ export default function NativIvrit() {
   const [rdScore,setRdScore] = useState(0);
   const [rdDone, setRdDone]  = useState(false);
   const [rdCombo,setRdCombo] = useState(0);
-  const handleRiddle = useCallback((opt) => {
+  const handleRiddle = ((opt) => {
     if (rdSel) return;
     setRdSel(opt);
     if (opt === RIDDLES[rdIdx].answer) {
@@ -254,19 +254,19 @@ export default function NativIvrit() {
       speakHebrew(RIDDLES[rdIdx].heb);
     } else { setRdCombo(0); }
   }, [rdSel, rdIdx, RIDDLES]);
-  const nextRiddle = useCallback(() => {
+  const nextRiddle = (() => {
     if (rdIdx < RIDDLES.length-1) { setRdIdx(i => i+1); setRdSel(null); }
     else setRdDone(true);
   }, [rdIdx, RIDDLES.length]);
 
   // Chat
-  const [messages, setMessages] = useState(CHAT_SEED);
+  const [messages, setMessages] = useState(MENSAGENS_INICIAIS);
   const [chatInput, setChatInput] = useState("");
   const chatRef = useRef(null);
   useEffect(() => {
     if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [messages]);
-  const sendMsg = useCallback(() => {
+  const sendMsg = (() => {
     if (!chatInput.trim()) return;
     const now = new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
     setMessages(m => [...m, { id:Date.now(), user:"Você", avatar:"👤", msg:chatInput.trim(), time:now, mine:true }]);
@@ -278,8 +278,8 @@ export default function NativIvrit() {
     }, 900);
   }, [chatInput]);
 
-  const goGame    = useCallback((g) => setScreen(g), []);
-  const closeGame = useCallback(() => setScreen(null), []);
+  const goGame    = ((g) => setScreen(g), []);
+  const closeGame = (() => setScreen(null), []);
 
   const TABS = [
     { id:"home",   icon:"🏠", label:"Início"    },
@@ -361,14 +361,14 @@ export default function NativIvrit() {
 
       {/* CONTEÚDO */}
       <div style={{ flex:1, overflowY:"auto", paddingBottom: screen ? 0 : 80 }}>
-        {screen === "fc"       && <FlashcardGame deck={WORDS} idx={fcIdx} flip={fcFlip} known={fcKnown} setFlip={setFcFlip} next={fcNext}/>}
+        {screen === "fc"       && <FlashcardGame deck={PALAVRAS} idx={fcIdx} flip={fcFlip} known={fcKnown} setFlip={setFcFlip} next={fcNext}/>}
         {screen === "match"    && <MatchGame left={leftItems} right={rightItems} sel={mSel} done={mDone} wrong={mWrong} score={mScore} allDone={Object.keys(mDone).length===matchWords.length} onSelect={handleMatch}/>}
-        {screen === "football" && <FootballQuiz words={FOOTBALL} idx={fqIdx} opts={fqOpts} sel={fqSel} score={fqScore} done={fqDone} combo={fqCombo} onAnswer={handleFQ} onNext={nextFQ}/>}
+        {screen === "football" && <FootballQuiz words={FUTEBOL} idx={fqIdx} opts={fqOpts} sel={fqSel} score={fqScore} done={fqDone} combo={fqCombo} onAnswer={handleFQ} onNext={nextFQ}/>}
         {screen === "riddle"   && <RiddleGame riddles={RIDDLES} idx={rdIdx} sel={rdSel} score={rdScore} done={rdDone} combo={rdCombo} onAnswer={handleRiddle} onNext={nextRiddle}/>}
         {screen === "penalty"  && <PenaltyGame onXp={n => setXp(x => x+n)}/>}
 
         {!screen && tab === "home"   && <HomeTab xp={xp} xpPct={xpPct} goGame={goGame} setTab={setTab}/>}
-        {!screen && tab === "learn"  && <LearnTab levels={LEVELS} xp={xp} xpPct={xpPct} goGame={goGame} words={WORDS}/>}
+        {!screen && tab === "learn"  && <LearnTab levels={LEVELS} xp={xp} xpPct={xpPct} goGame={goGame} words={PALAVRAS}/>}
         {!screen && tab === "games"  && <GamesTab goGame={goGame} setTab={setTab}/>}
         {!screen && tab === "listen" && <ListenTab challenges={LISTEN_CHALLENGES} setXp={setXp}/>}
         {!screen && tab === "chat"   && <ChatTab messages={messages} input={chatInput} setInput={setChatInput} onSend={sendMsg} chatRef={chatRef}/>}
@@ -402,7 +402,7 @@ export default function NativIvrit() {
 // ── HOME TAB ──────────────────────────────────────────────────────────────────
 function HomeTab({ xp, xpPct, goGame, setTab }) {
   // Palavra do dia rotativa
-  const wordOfDay = WORDS[new Date().getDate() % WORDS.length];
+  const wordOfDay = PALAVRAS[new Date().getDate() % PALAVRAS.length];
 
   return (
     <div className="fadeUp" style={{padding:"24px 20px"}}>
@@ -432,7 +432,7 @@ function HomeTab({ xp, xpPct, goGame, setTab }) {
         <div style={{ fontSize:38, direction:"rtl", fontWeight:800, color:C.navy, marginBottom:4, letterSpacing:"-.01em" }}>{wordOfDay.heb}</div>
         <div style={{ color:C.orangeMid, fontWeight:700, fontSize:17, marginBottom:2 }}>{wordOfDay.tr}</div>
         <div style={{ color:C.gray, fontSize:14, marginBottom:16 }}>{wordOfDay.pt}</div>
-        <AudioBtn text={wordOfDay.heb} label="Ouvir pronúncia"/>
+        <BotaoAudio text={wordOfDay.heb} label="Ouvir pronúncia"/>
       </div>
 
       {/* Exercícios recomendados */}
@@ -470,7 +470,7 @@ function HomeTab({ xp, xpPct, goGame, setTab }) {
 function LearnTab({ levels, xp, xpPct, goGame, words }) {
   const [playingIdx, setPlayingIdx] = useState(null);
 
-  const handlePlay = useCallback((word, idx) => {
+  const handlePlay = ((word, idx) => {
     if (playingIdx === idx) { window.speechSynthesis.cancel(); setPlayingIdx(null); return; }
     setPlayingIdx(idx);
     speakHebrew(word.heb, () => setPlayingIdx(null));
@@ -918,7 +918,7 @@ function FlashcardGame({ deck, idx, flip, known, setFlip, next }) {
   const card = deck[idx];
   const [playing, setPlaying] = useState(false);
 
-  const handlePlay = useCallback((e) => {
+  const handlePlay = ((e) => {
     e.stopPropagation();
     if (playing) { window.speechSynthesis.cancel(); setPlaying(false); return; }
     setPlaying(true);
@@ -1025,7 +1025,7 @@ function MatchGame({ left, right, sel, done, wrong, score, allDone, onSelect }) 
   );
 }
 
-// ── FOOTBALL QUIZ ─────────────────────────────────────────────────────────────
+// ── FUTEBOL QUIZ ─────────────────────────────────────────────────────────────
 function FootballQuiz({ words, idx, opts, sel, score, done, combo, onAnswer, onNext }) {
   const cur = words[idx];
   const [playing, setPlaying] = useState(false);
@@ -1143,7 +1143,7 @@ function RiddleGame({ riddles, idx, sel, score, done, combo, onAnswer, onNext })
 // ── PENALTY GAME ──────────────────────────────────────────────────────────────
 function PenaltyGame({ onXp }) {
   const [phase, setPhase]             = useState("intro");
-  const [questions]                   = useState(() => shuffle(PENALTY_QUESTIONS).slice(0, TOTAL_KICKS));
+  const [questions]                   = useState(() => embaralhar(PENALTY_QUESTIONS).slice(0, TOTAL_KICKS));
   const [qIdx, setQIdx]               = useState(0);
   const [selectedOpt, setSelectedOpt] = useState(null);
   const [answeredCorrect, setAnsweredCorrect] = useState(false);
@@ -1170,7 +1170,7 @@ function PenaltyGame({ onXp }) {
     setTimeout(() => setPhase("aim"), 900);
   };
 
-  const getAimFromEvent = useCallback((e, el) => {
+  const getAimFromEvent = ((e, el) => {
     const rect = el.getBoundingClientRect();
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -1474,4 +1474,3 @@ function PenaltyBall({ x, y, stage, shotResult }) {
 
 //4)criar um db para guardar as palavras em hebraico e minimizar linhas de código (firebase,SQLite e PgAdmin4)
 
-//5) criar um forms para saber o interesse sobre a  cultura e aproximação judaica
