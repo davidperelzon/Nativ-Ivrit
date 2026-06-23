@@ -1,1 +1,1 @@
-# Nativ Ivrit React Native\nProjeto base com navegação, listas e jogo simples.
+# Nativ Ivrit
